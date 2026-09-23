@@ -116,6 +116,7 @@ class bersama saling berbeda — scoping menjaga nilai asli tiap layar).
 | Gejala | Sebab | Fix |
 |---|---|---|
 | `/api/*` balas **302 ke /login** | Salah port — app lain di :8000 | Pakai `--port=8001` |
+| `/api/*` balas **500 kosong**, log server penuh `require_once(/index.php)` | Instance `artisan serve` **basi** masih memegang port; server baru gagal bind | Matikan pid lama dulu (`ss -ltnp \| grep 8001` → `kill <pid>`), lalu start ulang |
 | Admin tanpa login balas **500** | Route `login` tak ada & redirect guest aktif | Sudah diperbaiki: `redirectGuestsTo(fn () => null)` di `bootstrap/app.php` |
 | Alert 409 tak muncul di UI | `error.fields` dikirim `[]` | Sudah diperbaiki: kosong → dihilangkan |
 | Jam booking bergeser 7 jam | Kirim `start_at` pakai `Z` (UTC) | Kirim offset `+07:00` (jam WIB) |
