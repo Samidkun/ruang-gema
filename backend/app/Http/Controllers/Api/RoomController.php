@@ -26,8 +26,13 @@ class RoomController extends Controller
         abort_unless(preg_match('/^\d{4}-\d{2}-\d{2}$/', $date), 422, 'Tanggal tidak valid.');
 
         $tz = config('app.display_timezone', 'Asia/Jakarta');
-        $dayStart = \Carbon\CarbonImmutable::parse($date, $tz)->startOfDay()->utc();
-        $dayEnd = $dayStart->addDay();
+        // Build the day window and the slots in the DISPLAY timezone (WIB), then
+        // store/serve UTC. Previously setTime() was applied to a UTC-shifted
+        // timestamp, so slots landed at 09.00 UTC (= 16.00 WIB) and no booking
+        // was ever matched — the grid never showed a taken slot (AC-3).
+        $dayStartWib = \Carbon\CarbonImmutable::parse($date, $tz)->startOfDay();
+        $dayStart = $dayStartWib->utc();
+        $dayEnd = $dayStartWib->addDay()->utc();
 
         $taken = $room->bookings()
             ->where('status', '!=', 'cancelled')
@@ -39,11 +44,12 @@ class RoomController extends Controller
 
         $slots = [];
         for ($h = 9; $h < 23; $h++) {
-            $start = $dayStart->setTime($h, 0);
+            $startWib = $dayStartWib->setTime($h, 0); // 09.00 WIB … 22.00 WIB
+            $startUtc = $startWib->utc();
             $slots[] = [
-                'start_at' => $start->toIso8601String(),
-                'end_at' => $start->addHour()->toIso8601String(),
-                'available' => ! in_array($start->format('H:i'), $taken, true),
+                'start_at' => $startUtc->toIso8601String(),
+                'end_at' => $startWib->addHour()->utc()->toIso8601String(),
+                'available' => ! in_array($startUtc->format('H:i'), $taken, true),
                 'price_idr' => $room->price_idr,
             ];
         }

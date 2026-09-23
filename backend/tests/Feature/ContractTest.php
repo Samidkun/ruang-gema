@@ -98,6 +98,37 @@ class ContractTest extends TestCase
         $this->assertSame(150000, $r->json('data.dp_idr'));
     }
 
+    // ---- AC-3: availability grid in display timezone ----------------------
+
+    public function test_ac3_availability_uses_wib_hours_and_flags_taken_slots(): void
+    {
+        $room = $this->room();
+
+        // A booking at 15.00 WIB (= 08.00 UTC) must mark the 15.00 slot taken.
+        $this->postJson('/api/bookings', [
+            'room_id' => $room->id,
+            'start_at' => '2026-11-20T15:00:00+07:00',
+            'duration_hours' => 1,
+            'name' => 'Slot Terisi',
+            'phone' => '081200000123',
+        ])->assertCreated();
+
+        $r = $this->getJson("/api/rooms/{$room->id}/availability?date=2026-11-20")->assertOk();
+        $slots = $r->json('data.slots');
+
+        $this->assertCount(14, $slots, 'grid must cover 09.00–22.00 WIB');
+
+        // Slots are the WIB hours, served as UTC instants (09.00 WIB == 02.00 UTC).
+        $this->assertSame('2026-11-20T02:00:00+00:00', $slots[0]['start_at']);
+
+        $byHour = [];
+        foreach ($slots as $s) {
+            $byHour[\Carbon\CarbonImmutable::parse($s['start_at'])->setTimezone('Asia/Jakarta')->format('H:i')] = $s['available'];
+        }
+        $this->assertFalse($byHour['15:00'], '15.00 WIB must be taken');
+        $this->assertTrue($byHour['16:00'], '16.00 WIB must be free');
+    }
+
     // ---- AC-6: public lookup by code, no PII leak -------------------------
 
     public function test_ac6_unknown_code_returns_404(): void
