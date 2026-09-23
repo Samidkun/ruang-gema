@@ -153,7 +153,11 @@ export default function AdminDashboard() {
 
       {/* Cancel modal — AC-9: owner cancels paid booking with reason + refund */}
       {cancelTarget && (
-        <div className="modal-backdrop" data-od-id="cancel-modal">
+        <div
+          className="modal-backdrop"
+          style={{ display: 'flex' }}
+          data-od-id="cancel-modal"
+        >
           <div className="modal-dialog">
             <h3 className="modal-title">Batalkan Reservasi Pelanggan</h3>
             <p className="modal-desc">

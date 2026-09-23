@@ -165,7 +165,7 @@ export default function BookingSuccess() {
             </tbody>
           </table>
 
-          {state === 'unpaid' && (
+          {booking && state === 'unpaid' && (
             <div className="payment-action-box" data-od-id="payment-action-box">
               <div style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-lg)', fontWeight: 700 }}>
                 Selesaikan Pembayaran DP 50%
@@ -188,7 +188,7 @@ export default function BookingSuccess() {
             </div>
           )}
 
-          {state === 'paying' && (
+          {booking && state === 'paying' && (
             <div className="payment-action-box" data-od-id="payment-processing-box">
               <div className="spinner"></div>
               <div style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-lg)', fontWeight: 700 }}>
@@ -200,7 +200,7 @@ export default function BookingSuccess() {
             </div>
           )}
 
-          {state === 'payment-failed' && (
+          {booking && state === 'payment-failed' && (
             <div className="payment-action-box" style={{ borderColor: 'var(--danger)' }} data-od-id="payment-failed-box">
               <div style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-lg)', fontWeight: 700, color: 'var(--danger)' }}>
                 Pembayaran Tidak Berhasil
@@ -219,7 +219,7 @@ export default function BookingSuccess() {
             </div>
           )}
 
-          {state === 'paid' && (
+          {booking && state === 'paid' && (
             <div style={{ borderTop: '1px solid var(--border)', paddingTop: 'var(--sp-4)', display: 'flex', flexDirection: 'column', gap: 'var(--sp-2)' }}>
               <div style={{ fontFamily: 'var(--font-mono)', fontSize: 'var(--text-xs)', color: 'var(--ok)', display: 'flex', alignItems: 'center', gap: 6 }}>
                 <span>✓</span> Notifikasi WhatsApp dan tanda terima telah dikirim ke {booking?.customer_phone}.

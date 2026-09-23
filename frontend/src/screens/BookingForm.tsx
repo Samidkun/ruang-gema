@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import { STUDIO } from '../data/studio';
 import { api, ApiClientError } from '../api/client';
 import type { ApiError } from '../types/api';
@@ -23,6 +24,17 @@ export default function BookingForm() {
   const room = STUDIO.rooms.find((r) => r.id === roomId)!;
   const durationHours = 2;
 
+  // AC-3: real availability — taken slots render disabled.
+  const { data: availability } = useQuery({
+    queryKey: ['availability', roomId, date],
+    queryFn: async () => (await api.availability(roomId, date)).data,
+  });
+  const takenHours = new Set(
+    (availability?.slots ?? [])
+      .filter((s) => !s.available)
+      .map((s) => hourWIB(s.start_at)),
+  );
+
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setConflict(null);
@@ -30,7 +42,8 @@ export default function BookingForm() {
     setSubmitting(true);
     try {
       // Contract: backend owns the price (AC-12) — client sends only intent.
-      const startAt = `${date}T${String(hour).padStart(2, '0')}:00:00Z`;
+      // The picked hour is WIB; send an explicit +07:00 offset (not a bare Z).
+      const startAt = `${date}T${String(hour).padStart(2, '0')}:00:00+07:00`;
       const { data } = await api.createBooking({
         room_id: room.id,
         start_at: startAt,
@@ -143,16 +156,22 @@ export default function BookingForm() {
               <span style={{ color: 'var(--muted)', fontSize: '0.7rem' }}>09.00 – 23.00 WIB</span>
             </div>
             <div className="slots-grid" data-od-id="slots-grid">
-              {SLOT_HOURS.map((h) => (
-                <button
-                  type="button"
-                  key={h}
-                  className={`slot-cell${h === hour ? ' selected' : ''}`}
-                  onClick={() => setHour(h)}
-                >
-                  <span className="slot-time">{String(h).padStart(2, '0')}.00</span>
-                </button>
-              ))}
+              {SLOT_HOURS.map((h) => {
+                const isTaken = takenHours.has(h);
+                return (
+                  <button
+                    type="button"
+                    key={h}
+                    className={`slot-cell${h === hour ? ' selected' : ''}${isTaken ? ' taken' : ''}`}
+                    onClick={() => !isTaken && setHour(h)}
+                    disabled={isTaken}
+                    aria-disabled={isTaken}
+                    data-od-id={`slot-${h}`}
+                  >
+                    <span className="slot-time">{String(h).padStart(2, '0')}.00</span>
+                  </button>
+                );
+              })}
             </div>
             <div className="slot-legend">
               <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
@@ -246,3 +265,12 @@ export default function BookingForm() {
 
 /** Operating hours 09.00–22.00 (last 1-hour slot starts at 22.00). */
 const SLOT_HOURS = Array.from({ length: 14 }, (_, i) => 9 + i);
+
+/** Hour-of-day in Asia/Jakarta from a UTC ISO timestamp (Constitution §1.4). */
+function hourWIB(iso: string): number {
+  return Number(
+    new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Jakarta', hour: '2-digit', hour12: false }).format(
+      new Date(iso),
+    ),
+  );
+}
