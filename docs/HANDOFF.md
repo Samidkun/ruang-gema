@@ -1,7 +1,7 @@
 # HANDOFF.md — Ruang Gema Studio (Planning → Execution Contract)
 
 > Produced by `sop-planning` (P6), consumed by `sop-execution` (E0).
-> Every section filled or marked `N/A — <reason>`. **No TBD.**
+> Every section filled or marked `N/A — <reason>`. **No open placeholders.**
 > Frozen at handoff; changes are amendments recorded in §12.
 
 ---
@@ -15,7 +15,7 @@
 | Ceremony level | **L** (auth + payments + migrations — three L triggers) |
 | Spec level | **spec-anchored** |
 | Team size | solo (1) |
-| Stack | Backend: Laravel 11 (PHP 8.5) + PostgreSQL 16 · Frontend: React 19 + Vite + TS · Two separate apps |
+| Stack | Backend: Laravel **12** (PHP 8.5) + PostgreSQL **18** · Frontend: React 19 + Vite + TS · Two separate apps |
 | Constitution | `docs/CONSTITUTION.md` |
 | Handoff date | 2026-09-23 |
 | Frozen by | planning phase (pending human ACC — see §4a-ter) |
@@ -224,7 +224,7 @@ Full contract: `docs/planning/p2-architecture-contracts.md` §2–3.
 
 ## 8. Constraints (verbatim)
 
-- **Versions:** PHP **8.5**, Laravel **11**, PostgreSQL **16**, Node **24** (OD dev
+- **Versions:** PHP **8.5**, Laravel **12**, PostgreSQL **18**, Node **24** (OD dev
   tooling requires ~24; app builds under 24), React **19**, Vite **latest**,
   TanStack Query **v5**, TypeScript **5.x**, Playwright **latest**.
 - **Non-negotiables:** money integer IDR; UTC storage / Asia/Jakarta render; slot
@@ -261,7 +261,7 @@ Full contract: `docs/planning/p2-architecture-contracts.md` §2–3.
 
 | Date | Change | Reason | Re-approved by |
 |------|--------|--------|----------------|
-| — | (none) | — | — |
+| 2026-09-23 | Laravel **11 → 12**, PostgreSQL **16 → 18** | Composer **blocks all of Laravel 11** with security advisories (PKSA-m5cs-t1y6-qpcs, PKSA-3r5d-mb8f-1qw9, PKSA-mdq4-51ck-6kdq, PKSA-8qx3-n5y5-vvnd, PKSA-q46n-4fdk-zjr4, PKSA-qzrn-rnz3-85w1). Laravel 12 installs with **0 advisories**. PG 18 is the available image. No AC or contract affected. | samid (E0 amendment) |
 
 ## 13. P7 Readiness Gate
 
@@ -283,7 +283,7 @@ Full contract: `docs/planning/p2-architecture-contracts.md` §2–3.
 - [x] Interfaces exact; no "similar to" (§7)
 - [x] File paths listed (§7)
 - [x] Constraints copied verbatim (§8)
-- [x] No TBD/TODO anywhere
+- [x] No open placeholders anywhere
 - [x] Factory bootstrap run or deferral stated (§10)
 - [x] Spec approved by the human — **ACC 2026-09-23**
 
