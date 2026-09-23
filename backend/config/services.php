@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'mock_gateway' => [
+        'secret' => env('MOCK_GATEWAY_SECRET', 'dev-mock-secret-change-me'),
+    ],
+
 ];
