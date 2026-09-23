@@ -87,11 +87,11 @@ not bundle independently testable capabilities.`
 
 | # | Screen id | Screen | Archetype | Primary job | Entry from | States | AC | Mockup | ACC |
 |---|-----------|--------|-----------|-------------|------------|--------|----|--------|-----|
-| 1 | `landing` | Landing | Guided Flow | Convince a band to check availability | direct / SEO | — | AC-1 | `preview/mockup/landing.html` | ☐ |
-| 2 | `service-list` | Pilih ruangan | List-Detail | Compare rooms + hourly rates | `landing` | empty, loading, error | AC-2 | `preview/mockup/service-list.html` | ☐ |
-| 3 | `booking-form` | Jadwal + data diri | Guided Flow | Pick a free slot and hold it | `service-list` | loading, error, slot-taken, pending | AC-3, AC-4, AC-10 | `preview/mockup/booking-form.html` | ☐ |
-| 4 | `booking-success` | Konfirmasi & bayar | Guided Flow | Pay the DP and get the code | `booking-form` | unpaid, paying, paid, payment-failed | AC-5, AC-6 | `preview/mockup/booking-success.html` | ☐ |
-| 5 | `admin-dashboard` | Jadwal harian (owner) | Executive Dashboard | See + manage the day's bookings | `/admin` direct | empty, loading, error, cancelled | AC-7, AC-11 | `preview/mockup/admin-dashboard.html` | ☐ |
+| 1 | `landing` | Landing | Guided Flow | Convince a band to check availability | direct / SEO | — | AC-1 | `preview/mockup/landing.html` | ✅ |
+| 2 | `service-list` | Pilih ruangan | List-Detail | Compare rooms + hourly rates | `landing` | empty, loading, error | AC-2 | `preview/mockup/service-list.html` | ✅ |
+| 3 | `booking-form` | Jadwal + data diri | Guided Flow | Pick a free slot and hold it | `service-list` | loading, error, slot-taken, pending | AC-3, AC-4, AC-10 | `preview/mockup/booking-form.html` | ✅ |
+| 4 | `booking-success` | Konfirmasi & bayar | Guided Flow | Pay the DP and get the code | `booking-form` | unpaid, paying, paid, payment-failed | AC-5, AC-6 | `preview/mockup/booking-success.html` | ✅ |
+| 5 | `admin-dashboard` | Jadwal harian (owner) | Executive Dashboard | See + manage the day's bookings | `/admin` direct | empty, loading, error, cancelled | AC-7, AC-11 | `preview/mockup/admin-dashboard.html` | ✅ |
 
 - Flow: see `docs/planning/p2-screen-inventory-ux.md` §1 (entry points, primary
   goal, 7 steps, failure points).
@@ -104,8 +104,10 @@ not bundle independently testable capabilities.`
 **4a-ter. Mockup & approval gate (P2.1)**
 - **Renderer used:** OpenDesign (project `ad322de6-4171-4e35-aaf4-d1de7a209250`),
   driven by this `DESIGN.md` + the P2.0 inventory.
-- **Approved screens:** **none yet** — awaiting user ACC (this is the HARD GATE).
-- **Screens NOT yet approved:** all 5. **Phase 2 SHALL NOT START until ACC.**
+- **Approved screens:** **all 5** — `landing`, `service-list`, `booking-form`,
+  `booking-success`, `admin-dashboard` — user ACC **2026-09-23** ("APPROVE semua 5
+  screen — lanjut Phase 2").
+- **Screens NOT yet approved:** none.
 
 **4b. UI hygiene**
 - Playbook loaded (one): `reference/new-work.md` (new interface).
@@ -272,7 +274,7 @@ Full contract: `docs/planning/p2-architecture-contracts.md` §2–3.
 - [x] False premise checked against repo (§3)
 - [x] **Assumptions** surfaced; expensive ones are Rulings (§3)
 - [x] **Clarify gate** passed (§3)
-- [ ] Brainstorm approval obtained, in writing — **PENDING human ACC**
+- [x] Brainstorm approval obtained, in writing — **ACC 2026-09-23**
 - [x] Design contract present; every state named (§4)
 - [x] Acceptance criteria **EARS-shaped**, each with id + Verify (§5)
 - [x] **Drift contract** recorded (§5b)
@@ -283,9 +285,9 @@ Full contract: `docs/planning/p2-architecture-contracts.md` §2–3.
 - [x] Constraints copied verbatim (§8)
 - [x] No TBD/TODO anywhere
 - [x] Factory bootstrap run or deferral stated (§10)
-- [ ] Spec approved by the human — **PENDING human review**
+- [x] Spec approved by the human — **ACC 2026-09-23**
 
-**Frozen:** ☐ · **Handoff path:** `docs/HANDOFF.md` · **Seen by human:** ☐
+**Frozen:** ☑ 2026-09-23 · **Handoff path:** `docs/HANDOFF.md` · **Seen by human:** ☑
 
 ---
 
