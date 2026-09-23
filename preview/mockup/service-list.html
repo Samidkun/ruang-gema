@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pilih Ruangan Rehearsal — Ruang Gema Studio</title>
+  <style>
+    :root {
+      /* — Warna semantik DESIGN.md — */
+      --bg: oklch(0.19 0.012 265);
+      --surface: oklch(0.24 0.014 265);
+      --surface-2: oklch(0.29 0.016 265);
+      --fg: oklch(0.96 0.006 265);
+      --muted: oklch(0.70 0.012 265);
+      --border: oklch(0.34 0.014 265);
+      --border-strong: oklch(0.46 0.016 265);
+
+      --accent: oklch(0.78 0.155 78);
+      --accent-fg: oklch(0.20 0.030 78);
+      --ok: oklch(0.72 0.140 150);
+      --warn: oklch(0.80 0.140 85);
+      --danger: oklch(0.66 0.190 25);
+
+      /* — Tipografi — */
+      --font-display: "Bricolage Grotesque", "Archivo", system-ui, sans-serif;
+      --font-body: "Public Sans", "IBM Plex Sans", system-ui, sans-serif;
+      --font-mono: "JetBrains Mono", "IBM Plex Mono", ui-monospace, monospace;
+
+      --text-xs: 0.75rem;
+      --text-sm: 0.8125rem;
+      --text-base: 0.9375rem;
+      --text-lg: 1.125rem;
+      --text-xl: 1.375rem;
+      --text-2xl: 1.75rem;
+      --text-3xl: clamp(2rem, 4vw, 2.75rem);
+
+      /* — Spasi — */
+      --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
+      --sp-5: 24px; --sp-6: 32px; --sp-7: 48px; --sp-8: 64px;
+
+      /* — Radius bervariasi — */
+      --r-sm: 4px;
+      --r-md: 8px;
+      --r-lg: 14px;
+      --r-pill: 999px;
+
+      --shadow-1: 0 1px 2px oklch(0.12 0.02 265 / 0.5);
+      --shadow-2: 0 8px 24px oklch(0.12 0.02 265 / 0.45);
+
+      --dur-fast: 120ms;
+      --dur-base: 180ms;
+      --ease: cubic-bezier(0.2, 0, 0, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: 1.5;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 var(--sp-4);
+    }
+
+    /* State Switcher Bar */
+    .state-bar {
+      background-color: var(--surface);
+      border-bottom: 1px solid var(--border-strong);
+      padding: var(--sp-2) var(--sp-4);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--sp-2);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+    }
+
+    .state-label {
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: var(--sp-2);
+    }
+
+    .state-toggle-group {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-1);
+      background-color: var(--bg);
+      padding: 2px;
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+    }
+
+    .state-btn {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      padding: var(--sp-1) var(--sp-3);
+      border-radius: var(--r-sm);
+      cursor: pointer;
+      min-height: 32px;
+      display: inline-flex;
+      align-items: center;
+      transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+    }
+
+    .state-btn:hover {
+      color: var(--fg);
+      background-color: var(--surface);
+    }
+
+    .state-btn.active {
+      background-color: var(--surface-2);
+      color: var(--fg);
+      font-weight: 600;
+    }
+
+    /* Header */
+    header {
+      border-bottom: 1px solid var(--border);
+      background-color: var(--bg);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-2);
+      text-decoration: none;
+      color: var(--fg);
+    }
+
+    .brand-mark {
+      width: 28px;
+      height: 28px;
+      border-radius: var(--r-md);
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      font-weight: 700;
+      color: var(--fg);
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: var(--text-base);
+      font-weight: 700;
+    }
+
+    .nav-link {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--muted);
+      text-decoration: none;
+      padding: var(--sp-2) var(--sp-3);
+      border-radius: var(--r-md);
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .nav-link:hover {
+      color: var(--fg);
+      background-color: var(--surface);
+    }
+
+    /* Page Intro */
+    .page-head {
+      padding: var(--sp-5) 0 var(--sp-4);
+    }
+
+    .page-title {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: var(--sp-1);
+    }
+
+    .page-sub {
+      color: var(--muted);
+      font-size: var(--text-sm);
+    }
+
+    /* ARCHETYPE: List-Detail Layout */
+    .list-detail-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--sp-5);
+      margin-bottom: var(--sp-7);
+    }
+
+    @media (min-width: 840px) {
+      .list-detail-grid {
+        grid-template-columns: 380px 1fr;
+        align-items: start;
+      }
+    }
+
+    /* List Column (Left) */
+    .list-pane {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-3);
+    }
+
+    .room-item-card {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: var(--sp-4);
+      cursor: pointer;
+      text-align: left;
+      width: 100%;
+      transition: background-color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-2);
+      min-height: 44px;
+    }
+
+    .room-item-card:hover {
+      background-color: var(--surface-2);
+      border-color: var(--border-strong);
+    }
+
+    .room-item-card.selected {
+      background-color: var(--surface-2);
+      border-color: var(--accent); /* Accent used here as active indicator */
+    }
+
+    .item-top {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+    }
+
+    .item-name {
+      font-family: var(--font-display);
+      font-size: var(--text-lg);
+      font-weight: 700;
+      color: var(--fg);
+    }
+
+    .item-size {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--muted);
+    }
+
+    .item-rate {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      font-size: var(--text-base);
+      font-weight: 700;
+      color: var(--fg);
+    }
+
+    .item-status-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: var(--sp-2);
+      border-top: 1px solid var(--border);
+      font-size: var(--text-xs);
+      font-family: var(--font-mono);
+    }
+
+    .badge-status {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sp-1);
+      padding: 2px var(--sp-2);
+      border-radius: var(--r-pill);
+      font-size: var(--text-xs);
+    }
+
+    .badge-ok {
+      background-color: var(--ok-tint);
+      color: var(--ok);
+      border: 1px solid var(--ok-border);
+    }
+
+    /* Detail Column (Right) */
+    .detail-pane {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: var(--sp-5);
+      box-shadow: var(--shadow-1);
+    }
+
+    .detail-header {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-2);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: var(--sp-4);
+      margin-bottom: var(--sp-4);
+    }
+
+    @media (min-width: 600px) {
+      .detail-header {
+        flex-direction: row;
+        align-items: flex-start;
+        justify-content: space-between;
+      }
+    }
+
+    .detail-title {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .detail-meta-line {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--muted);
+      margin-top: var(--sp-1);
+    }
+
+    .detail-price-box {
+      text-align: left;
+    }
+
+    @media (min-width: 600px) {
+      .detail-price-box {
+        text-align: right;
+      }
+    }
+
+    .detail-price-val {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      font-size: var(--text-2xl);
+      font-weight: 700;
+      color: var(--fg);
+    }
+
+    .detail-dp-info {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--muted);
+    }
+
+    .detail-section-title {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--sp-2);
+    }
+
+    .specs-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--sp-3);
+      margin-bottom: var(--sp-5);
+    }
+
+    @media (min-width: 580px) {
+      .specs-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .spec-block {
+      background-color: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      padding: var(--sp-3);
+    }
+
+    .spec-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--muted);
+      margin-bottom: var(--sp-1);
+    }
+
+    .spec-val {
+      font-size: var(--text-sm);
+      color: var(--fg);
+    }
+
+    .gear-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--sp-2);
+      margin-bottom: var(--sp-5);
+    }
+
+    @media (min-width: 580px) {
+      .gear-list {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .gear-item {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-2);
+      font-size: var(--text-sm);
+      color: var(--fg);
+      padding: var(--sp-2);
+      background-color: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+    }
+
+    .gear-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: var(--r-pill);
+      background-color: var(--ok);
+    }
+
+    .detail-cta-bar {
+      border-top: 1px solid var(--border);
+      padding-top: var(--sp-4);
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-3);
+    }
+
+    @media (min-width: 600px) {
+      .detail-cta-bar {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    /* 1 Primary Button rule: Amber accent */
+    .btn-primary {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: var(--text-base);
+      color: var(--accent-fg);
+      background-color: var(--accent); /* Accent CTA */
+      border: 1px solid transparent;
+      border-radius: var(--r-md);
+      padding: 0 var(--sp-5);
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--sp-2);
+      text-decoration: none;
+      cursor: pointer;
+      transition: filter var(--dur-fast) var(--ease);
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.08);
+    }
+
+    /* SKELETON LOADING STATE (AC-2) */
+    .skeleton-pane {
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-3);
+    }
+
+    .skeleton-box {
+      background: linear-gradient(90deg, var(--surface) 25%, var(--surface-2) 50%, var(--surface) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: var(--r-md);
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .skeleton-card {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: var(--sp-4);
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-3);
+    }
+
+    /* EMPTY STATE */
+    .state-card-empty,
+    .state-card-error {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: var(--sp-6) var(--sp-5);
+      text-align: center;
+      max-width: 600px;
+      margin: var(--sp-6) auto;
+    }
+
+    .state-icon {
+      font-family: var(--font-mono);
+      font-size: var(--text-xl);
+      color: var(--muted);
+      margin-bottom: var(--sp-3);
+    }
+
+    .state-title {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: 700;
+      margin-bottom: var(--sp-2);
+    }
+
+    .state-desc {
+      font-size: var(--text-sm);
+      color: var(--muted);
+      margin-bottom: var(--sp-4);
+      line-height: 1.5;
+    }
+
+    .btn-retry {
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      color: var(--fg);
+      background-color: var(--surface-2);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--r-md);
+      padding: 0 var(--sp-4);
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .btn-retry:hover {
+      background-color: var(--border);
+    }
+
+    /* Visibility helpers */
+    .view-state {
+      display: none;
+    }
+
+    .view-state.active {
+      display: block;
+    }
+  </style>
+</head>
+<body data-od-id="service-list-screen">
+
+  <!-- STATE SWITCHER (P2.0 Screen Inventory: happy, loading, empty, error) -->
+  <div class="state-bar" data-od-id="state-switcher">
+    <div class="state-label">
+      <span>LAYAR 2: PILIH RUANGAN (LIST-DETAIL)</span>
+      <span>·</span>
+      <span style="color: var(--fg);">State saat ini:</span>
+    </div>
+    <div class="state-toggle-group">
+      <button type="button" class="state-btn active" onclick="switchState('happy')" data-od-id="toggle-happy">Happy</button>
+      <button type="button" class="state-btn" onclick="switchState('loading')" data-od-id="toggle-loading">Loading (Skeleton)</button>
+      <button type="button" class="state-btn" onclick="switchState('empty')" data-od-id="toggle-empty">Empty</button>
+      <button type="button" class="state-btn" onclick="switchState('error')" data-od-id="toggle-error">Error</button>
+    </div>
+  </div>
+
+  <header>
+    <div class="container">
+      <div class="nav-inner">
+        <a href="landing.html" class="brand" data-od-id="nav-brand">
+          <div class="brand-mark">RG</div>
+          <span class="brand-title">Ruang Gema</span>
+        </a>
+        <nav style="display: flex; gap: var(--sp-2);">
+          <a href="landing.html" class="nav-link">Beranda</a>
+          <a href="booking-form.html" class="nav-link">Grid jadwal</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="page-head">
+      <h1 class="page-title">Pilih Ruangan Rehearsal</h1>
+      <p class="page-sub">Bandingkan ukuran ruang, kelengkapan audio, dan tarif per jam sebelum menentukan slot.</p>
+    </div>
+
+    <!-- STATE 1: HAPPY (List-Detail Normal) -->
+    <div id="state-happy" class="view-state active" data-od-id="view-happy">
+      <div class="list-detail-grid">
+
+        <!-- LIST PANE (Left) — AC-2 format "Rp 150.000/jam" -->
+        <div class="list-pane" data-od-id="rooms-list-container">
+          
+          <!-- Room 1: Studio A -->
+          <div class="room-item-card selected" onclick="selectRoom('A')" data-od-id="item-studio-a">
+            <div class="item-top">
+              <span class="item-name">Studio A</span>
+              <span class="item-size">6 × 5 METER</span>
+            </div>
+            <div class="item-rate">Rp 150.000/jam</div>
+            <div class="item-status-row">
+              <span class="badge-status badge-ok">● Tersedia hari ini</span>
+              <span style="color: var(--muted);">Full backline</span>
+            </div>
+          </div>
+
+          <!-- Room 2: Studio B -->
+          <div class="room-item-card" onclick="selectRoom('B')" data-od-id="item-studio-b">
+            <div class="item-top">
+              <span class="item-name">Studio B</span>
+              <span class="item-size">5 × 4 METER</span>
+            </div>
+            <div class="item-rate">Rp 120.000/jam</div>
+            <div class="item-status-row">
+              <span class="badge-status badge-ok">● Tersedia hari ini</span>
+              <span style="color: var(--muted);">Drum & bass rig</span>
+            </div>
+          </div>
+
+          <!-- Room 3: Studio C -->
+          <div class="room-item-card" onclick="selectRoom('C')" data-od-id="item-studio-c">
+            <div class="item-top">
+              <span class="item-name">Studio C</span>
+              <span class="item-size">4 × 3 METER</span>
+            </div>
+            <div class="item-rate">Rp 90.000/jam</div>
+            <div class="item-status-row">
+              <span class="badge-status badge-ok">● Tersedia hari ini</span>
+              <span style="color: var(--muted);">Akustik & keyboard</span>
+            </div>
+          </div>
+
+          <!-- Room 4: Studio D -->
+          <div class="room-item-card" onclick="selectRoom('D')" data-od-id="item-studio-d">
+            <div class="item-top">
+              <span class="item-name">Studio D</span>
+              <span class="item-size">7 × 6 METER</span>
+            </div>
+            <div class="item-rate">Rp 250.000/jam</div>
+            <div class="item-status-row">
+              <span class="badge-status badge-ok">● Tersedia hari ini</span>
+              <span style="color: var(--muted);">Recording-ready</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- DETAIL PANE (Right) -->
+        <div class="detail-pane" data-od-id="room-detail-pane">
+          <div class="detail-header">
+            <div>
+              <h2 id="det-name" class="detail-title">Studio A</h2>
+              <div id="det-meta" class="detail-meta-line">Kapasitas 6–8 Personil · Dimensi 6 × 5 Meter · AC 2 PK</div>
+            </div>
+            <div class="detail-price-box">
+              <div id="det-price" class="detail-price-val">Rp 150.000</div>
+              <div id="det-dp" class="detail-dp-info">DP 50%: Rp 75.000/jam</div>
+            </div>
+          </div>
+
+          <div class="detail-section-title">Spesifikasi Ruangan</div>
+          <div class="specs-grid">
+            <div class="spec-block">
+              <div class="spec-label">Akustik & Peredam</div>
+              <div id="det-acoustic" class="spec-val">Rockwool 80kg/m³ + double drywall, zero bleed antar studio.</div>
+            </div>
+            <div class="spec-block">
+              <div class="spec-label">Sistem Monitoring</div>
+              <div id="det-monitoring" class="spec-val">2× Active floor wedge 12" + mixer 16 channel AUX independen.</div>
+            </div>
+          </div>
+
+          <div class="detail-section-title">Kelengkapan Backline & Instrumen</div>
+          <ul id="det-gear" class="gear-list">
+            <li class="gear-item"><span class="gear-dot"></span>Tama Superstar Hyperdrive 5-piece Drum Kit</li>
+            <li class="gear-item"><span class="gear-dot"></span>Marshall JCM900 Tube Head + 1960A 4×12 Cabinet</li>
+            <li class="gear-item"><span class="gear-dot"></span>Fender Twin Reverb 2×12 Guitar Amp</li>
+            <li class="gear-item"><span class="gear-dot"></span>Ampeg SVT-4PRO + 8×10 Bass Cabinet</li>
+            <li class="gear-item"><span class="gear-dot"></span>3× Shure SM58 Vocal Microphones + Stand</li>
+            <li class="gear-item"><span class="gear-dot"></span>Roland KC-550 Keyboard Amplifier</li>
+          </ul>
+
+          <div class="detail-cta-bar">
+            <div>
+              <span style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--muted);">Minimal durasi sewa: 1 jam · Jadwal 09.00 - 23.00</span>
+            </div>
+            <a id="det-cta" href="booking-form.html?room=studio-a" class="btn-primary" data-od-id="cta-book-selected">
+              <span>Pilih jadwal Studio A</span>
+              <span style="font-family: var(--font-mono);">→</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- STATE 2: LOADING SKELETON (AC-2) -->
+    <div id="state-loading" class="view-state" data-od-id="view-loading">
+      <div class="list-detail-grid">
+        <div class="skeleton-pane">
+          <div class="skeleton-card">
+            <div class="skeleton-box" style="width: 50%; height: 20px;"></div>
+            <div class="skeleton-box" style="width: 70%; height: 16px;"></div>
+            <div class="skeleton-box" style="width: 40%; height: 14px;"></div>
+          </div>
+          <div class="skeleton-card">
+            <div class="skeleton-box" style="width: 45%; height: 20px;"></div>
+            <div class="skeleton-box" style="width: 65%; height: 16px;"></div>
+            <div class="skeleton-box" style="width: 35%; height: 14px;"></div>
+          </div>
+          <div class="skeleton-card">
+            <div class="skeleton-box" style="width: 55%; height: 20px;"></div>
+            <div class="skeleton-box" style="width: 60%; height: 16px;"></div>
+            <div class="skeleton-box" style="width: 40%; height: 14px;"></div>
+          </div>
+        </div>
+        <div class="detail-pane">
+          <div class="skeleton-box" style="width: 60%; height: 32px; margin-bottom: var(--sp-4);"></div>
+          <div class="skeleton-box" style="width: 100%; height: 80px; margin-bottom: var(--sp-4);"></div>
+          <div class="skeleton-box" style="width: 100%; height: 120px; margin-bottom: var(--sp-4);"></div>
+          <div class="skeleton-box" style="width: 40%; height: 48px;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATE 3: EMPTY STATE (P2.4 Microcopy teaching rule) -->
+    <div id="state-empty" class="view-state" data-od-id="view-empty">
+      <div class="state-card-empty">
+        <div class="state-icon">[ 0 RUANGAN ]</div>
+        <h2 class="state-title">Belum ada ruangan yang tersedia</h2>
+        <p class="state-desc">
+          Semua ruangan sedang dalam pemeliharaan berkala atau pembaruan backline. Jadwal ruangan akan kembali muncul di sini begitu sesi siap dipesan.
+        </p>
+        <button type="button" class="btn-retry" onclick="switchState('happy')">Periksa ulang ketersediaan</button>
+      </div>
+    </div>
+
+    <!-- STATE 4: ERROR STATE (P2.4 Error recovery rule) -->
+    <div id="state-error" class="view-state" data-od-id="view-error">
+      <div class="state-card-error" style="border-color: var(--danger);">
+        <div class="state-icon" style="color: var(--danger);">[ KONEKSI TERPUTUS ]</div>
+        <h2 class="state-title">Gagal memuat daftar ruangan</h2>
+        <p class="state-desc">
+          Terjadi gangguan saat mengambil data tarif dan spesifikasi dari server. Silakan muat ulang halaman atau periksa sambungan internet lu.
+        </p>
+        <button type="button" class="btn-retry" onclick="switchState('happy')">Coba lagi</button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const roomData = {
+      'A': {
+        name: 'Studio A',
+        size: '6 × 5 METER',
+        meta: 'Kapasitas 6–8 Personil · Dimensi 6 × 5 Meter · AC 2 PK',
+        price: 'Rp 150.000',
+        dp: 'DP 50%: Rp 75.000/jam',
+        acoustic: 'Rockwool 80kg/m³ + double drywall, zero bleed antar studio.',
+        monitoring: '2× Active floor wedge 12" + mixer 16 channel AUX independen.',
+        gear: [
+          'Tama Superstar Hyperdrive 5-piece Drum Kit',
+          'Marshall JCM900 Tube Head + 1960A 4×12 Cabinet',
+          'Fender Twin Reverb 2×12 Guitar Amp',
+          'Ampeg SVT-4PRO + 8×10 Bass Cabinet',
+          '3× Shure SM58 Vocal Microphones + Stand',
+          'Roland KC-550 Keyboard Amplifier'
+        ],
+        ctaText: 'Pilih jadwal Studio A',
+        ctaHref: 'booking-form.html?room=studio-a'
+      },
+      'B': {
+        name: 'Studio B',
+        size: '5 × 4 METER',
+        meta: 'Kapasitas 4–6 Personil · Dimensi 5 × 4 Meter · AC 1.5 PK',
+        price: 'Rp 120.000',
+        dp: 'DP 50%: Rp 60.000/jam',
+        acoustic: 'Acoustic diffuser panel kayu jati belanda + bass trap sudut.',
+        monitoring: '1× Active floor monitor 12" + Mackie 12 channel analog mixer.',
+        gear: [
+          'Pearl Export Series 5-piece Drum Kit',
+          'Peavey Bandit 112 Guitar Combo Amp',
+          'Roland Cube 80GX Guitar Amp',
+          'Hartke HD150 Bass Combo Amp',
+          '2× Shure SM58 Vocal Microphones',
+          'Kabel jack Klotz + stand mic tebal'
+        ],
+        ctaText: 'Pilih jadwal Studio B',
+        ctaHref: 'booking-form.html?room=studio-b'
+      },
+      'C': {
+        name: 'Studio C',
+        size: '4 × 3 METER',
+        meta: 'Kapasitas 2–4 Personil · Dimensi 4 × 3 Meter · AC 1 PK',
+        price: 'Rp 90.000',
+        dp: 'DP 50%: Rp 45.000/jam',
+        acoustic: 'Panel peredam busa piramid + karpet tebal kedap suara.',
+        monitoring: 'Stereo studio monitors Yamaha HS5 + USB Audio Interface.',
+        gear: [
+          'Yamaha P-125 Digital Piano 88 Weighted Keys',
+          'Fender Acoustasonic 40 Amp',
+          'Roland KC-150 Keyboard Amp',
+          '2× Behringer XM8500 Vocal Mic',
+          'Stand keyboard double X tebal'
+        ],
+        ctaText: 'Pilih jadwal Studio C',
+        ctaHref: 'booking-form.html?room=studio-c'
+      },
+      'D': {
+        name: 'Studio D',
+        size: '7 × 6 METER',
+        meta: 'Kapasitas 8–12 Personil · Ruang Kontrol Terpisah · AC 2.5 PK',
+        price: 'Rp 250.000',
+        dp: 'DP 50%: Rp 125.000/jam',
+        acoustic: 'Full Floating Room Design + Floating Floor (Recording Grade).',
+        monitoring: 'In-ear monitoring Behringer P16M 6 unit + Genelec 8040B di control room.',
+        gear: [
+          'DW Collector’s Series Drum Kit with Zildjian K Cymbals',
+          'Mesa Boogie Dual Rectifier + 4×12 Slant Cab',
+          'Vox AC30 Custom Classic Tube Combo',
+          'Darkglass Microtubes 900 v2 + 4×10 Bass Cab',
+          '5× Shure Beta 58A / Beta 52A / SM57 Mic Locker',
+          'Presonus StudioLive 32SX Multitrack Recording Console'
+        ],
+        ctaText: 'Pilih jadwal Studio D',
+        ctaHref: 'booking-form.html?room=studio-d'
+      }
+    };
+
+    function selectRoom(code) {
+      document.querySelectorAll('.room-item-card').forEach(el => el.classList.remove('selected'));
+      const activeCard = document.querySelector(`[data-od-id="item-studio-${code.toLowerCase()}"]`);
+      if (activeCard) activeCard.classList.add('selected');
+
+      const data = roomData[code];
+      if (!data) return;
+
+      document.getElementById('det-name').textContent = data.name;
+      document.getElementById('det-meta').textContent = data.meta;
+      document.getElementById('det-price').textContent = data.price;
+      document.getElementById('det-dp').textContent = data.dp;
+      document.getElementById('det-acoustic').textContent = data.acoustic;
+      document.getElementById('det-monitoring').textContent = data.monitoring;
+
+      const gearUl = document.getElementById('det-gear');
+      gearUl.innerHTML = '';
+      data.gear.forEach(item => {
+        const li = document.createElement('li');
+        li.className = 'gear-item';
+        li.innerHTML = `<span class="gear-dot"></span>${item}`;
+        gearUl.appendChild(li);
+      });
+
+      const cta = document.getElementById('det-cta');
+      cta.innerHTML = `<span>${data.ctaText}</span><span style="font-family: var(--font-mono);">→</span>`;
+      cta.href = data.ctaHref;
+    }
+
+    function switchState(stateName) {
+      document.querySelectorAll('.state-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.querySelector(`[data-od-id="toggle-${stateName}"]`);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      document.querySelectorAll('.view-state').forEach(v => v.classList.remove('active'));
+      const targetView = document.getElementById(`state-${stateName}`);
+      if (targetView) targetView.classList.add('active');
+    }
+  </script>
+</body>
+</html>

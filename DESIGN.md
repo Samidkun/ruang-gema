@@ -50,6 +50,16 @@ Konsekuensi konkret:
   --warn:      oklch(0.80 0.140 85);   /* menunggu bayar */
   --danger:    oklch(0.66 0.190 25);   /* gagal / bentrok */
 
+  /* — Tint: permukaan berwarna untuk alert/badge. Pakai INI, jangan
+       mengarang oklch sendiri di komponen. — */
+  --ok-tint:      oklch(0.24 0.05 150);
+  --warn-tint:    oklch(0.24 0.05 85);
+  --danger-tint:  oklch(0.24 0.05 25);
+  --accent-tint:  oklch(0.26 0.06 78);
+  --ok-border:     oklch(0.35 0.08 150);
+  --warn-border:   oklch(0.38 0.09 85);
+  --danger-border: oklch(0.36 0.10 25);
+
   /* — Tipografi: 3 keluarga, peran tegas — */
   --font-display: "Bricolage Grotesque", "Archivo", system-ui, sans-serif;
   --font-body:    "Public Sans", "IBM Plex Sans", system-ui, sans-serif;
@@ -84,8 +94,9 @@ Konsekuensi konkret:
 
 ## 5. Aturan visual (mengikat)
 
-1. **Aksen maksimal 2× per layar.** Amber = satu CTA primer + satu penanda aktif.
-   Sisanya ghost/teks.
+1. **Aksen maksimal 2× per layar.** Amber = satu CTA primer + satu penanda
+   aktif/pilihan (mis. slot terpilih). Sisanya ghost/teks. **Wordmark/brand-mark
+   BUKAN pemakaian aksen** — pakai `--fg`. Kicker/label kecil pakai `--muted`.
 2. **Font display = Bricolage Grotesque.** Jangan Inter/Roboto/Arial untuk judul.
 3. **Radius bervariasi** — kartu `--r-lg`, tombol `--r-md`, badge `--r-pill`.
    Jangan seragam.

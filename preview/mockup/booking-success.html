@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Konfirmasi & Pembayaran Booking — Ruang Gema Studio</title>
+  <style>
+    :root {
+      /* — Warna semantik DESIGN.md — */
+      --bg: oklch(0.19 0.012 265);
+      --surface: oklch(0.24 0.014 265);
+      --surface-2: oklch(0.29 0.016 265);
+      --fg: oklch(0.96 0.006 265);
+      --muted: oklch(0.70 0.012 265);
+      --border: oklch(0.34 0.014 265);
+      --border-strong: oklch(0.46 0.016 265);
+
+      --accent: oklch(0.78 0.155 78);
+      --accent-fg: oklch(0.20 0.030 78);
+      --ok: oklch(0.72 0.140 150);
+      --warn: oklch(0.80 0.140 85);
+      --danger: oklch(0.66 0.190 25);
+
+      /* — Tipografi — */
+      --font-display: "Bricolage Grotesque", "Archivo", system-ui, sans-serif;
+      --font-body: "Public Sans", "IBM Plex Sans", system-ui, sans-serif;
+      --font-mono: "JetBrains Mono", "IBM Plex Mono", ui-monospace, monospace;
+
+      --text-xs: 0.75rem;
+      --text-sm: 0.8125rem;
+      --text-base: 0.9375rem;
+      --text-lg: 1.125rem;
+      --text-xl: 1.375rem;
+      --text-2xl: 1.75rem;
+      --text-3xl: clamp(2rem, 4vw, 2.75rem);
+
+      /* — Spasi — */
+      --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
+      --sp-5: 24px; --sp-6: 32px; --sp-7: 48px; --sp-8: 64px;
+
+      /* — Radius bervariasi — */
+      --r-sm: 4px;
+      --r-md: 8px;
+      --r-lg: 14px;
+      --r-pill: 999px;
+
+      --shadow-1: 0 1px 2px oklch(0.12 0.02 265 / 0.5);
+      --shadow-2: 0 8px 24px oklch(0.12 0.02 265 / 0.45);
+
+      --dur-fast: 120ms;
+      --dur-base: 180ms;
+      --ease: cubic-bezier(0.2, 0, 0, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: 1.5;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 0 var(--sp-4);
+    }
+
+    /* State Switcher Bar */
+    .state-bar {
+      background-color: var(--surface);
+      border-bottom: 1px solid var(--border-strong);
+      padding: var(--sp-2) var(--sp-4);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--sp-2);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+    }
+
+    .state-label {
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: var(--sp-2);
+    }
+
+    .state-toggle-group {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-1);
+      background-color: var(--bg);
+      padding: 2px;
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+    }
+
+    .state-btn {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      padding: var(--sp-1) var(--sp-3);
+      border-radius: var(--r-sm);
+      cursor: pointer;
+      min-height: 32px;
+      display: inline-flex;
+      align-items: center;
+      transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+    }
+
+    .state-btn:hover {
+      color: var(--fg);
+      background-color: var(--surface);
+    }
+
+    .state-btn.active {
+      background-color: var(--surface-2);
+      color: var(--fg);
+      font-weight: 600;
+    }
+
+    /* Header */
+    header {
+      border-bottom: 1px solid var(--border);
+      background-color: var(--bg);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-2);
+      text-decoration: none;
+      color: var(--fg);
+    }
+
+    .brand-mark {
+      width: 28px;
+      height: 28px;
+      border-radius: var(--r-md);
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      font-weight: 700;
+      color: var(--fg);
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: var(--text-base);
+      font-weight: 700;
+    }
+
+    .nav-link {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--muted);
+      text-decoration: none;
+      padding: var(--sp-2) var(--sp-3);
+      border-radius: var(--r-md);
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .nav-link:hover {
+      color: var(--fg);
+      background-color: var(--surface);
+    }
+
+    /* Flow Layout */
+    .flow-wrapper {
+      padding: var(--sp-6) 0 var(--sp-8);
+    }
+
+    .step-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sp-2);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--muted);
+      margin-bottom: var(--sp-2);
+    }
+
+    /* Receipt & Ticket Card (Signature Bet: Monospace timecode & tabular nums) */
+    .ticket-card {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: var(--sp-6);
+      box-shadow: var(--shadow-2);
+      margin-bottom: var(--sp-5);
+    }
+
+    .ticket-status-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: var(--sp-4);
+      margin-bottom: var(--sp-5);
+    }
+
+    .badge-status {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sp-2);
+      padding: var(--sp-1) var(--sp-3);
+      border-radius: var(--r-pill);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      font-weight: 600;
+    }
+
+    .status-unpaid {
+      background-color: var(--warn-tint);
+      color: var(--warn);
+      border: 1px solid var(--warn-border);
+    }
+
+    .status-paid {
+      background-color: var(--ok-tint);
+      color: var(--ok);
+      border: 1px solid var(--ok-border);
+    }
+
+    .status-failed {
+      background-color: var(--danger-tint);
+      color: var(--danger);
+      border: 1px solid var(--danger-border);
+    }
+
+    .booking-code-box {
+      background-color: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      padding: var(--sp-4);
+      margin-bottom: var(--sp-5);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--sp-3);
+    }
+
+    .code-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 2px;
+    }
+
+    .code-val {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      font-size: var(--text-2xl);
+      font-weight: 700;
+      color: var(--fg);
+      letter-spacing: 0.04em;
+    }
+
+    .btn-copy-code {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      background-color: var(--surface-2);
+      color: var(--fg);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--r-sm);
+      padding: var(--sp-2) var(--sp-3);
+      cursor: pointer;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sp-1);
+    }
+
+    .btn-copy-code:hover {
+      background-color: var(--border);
+    }
+
+    /* Schedule Details Grid */
+    .details-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: var(--sp-5);
+      font-size: var(--text-sm);
+    }
+
+    .details-table tr {
+      border-bottom: 1px solid var(--border);
+    }
+
+    .details-table th,
+    .details-table td {
+      padding: var(--sp-3) 0;
+      text-align: left;
+    }
+
+    .details-table th {
+      color: var(--muted);
+      font-weight: 400;
+      width: 40%;
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+    }
+
+    .details-table td {
+      color: var(--fg);
+      font-weight: 600;
+    }
+
+    .val-mono {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Mock Gateway QRIS Box (Unpaid State) */
+    .payment-action-box {
+      background-color: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: var(--sp-5);
+      margin-top: var(--sp-4);
+      text-align: center;
+    }
+
+    .mock-qris {
+      width: 180px;
+      height: 180px;
+      background-color: var(--fg);
+      margin: var(--sp-3) auto;
+      border-radius: var(--r-md);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--bg);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      font-weight: 700;
+      border: 4px solid var(--border);
+    }
+
+    /* 1 Primary Button */
+    .btn-pay-now {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: var(--text-base);
+      color: var(--accent-fg);
+      background-color: var(--accent); /* Accent 1/2 */
+      border: 1px solid transparent;
+      border-radius: var(--r-md);
+      padding: 0 var(--sp-5);
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--sp-2);
+      cursor: pointer;
+      width: 100%;
+      max-width: 380px;
+      margin: var(--sp-3) auto 0;
+      transition: filter var(--dur-fast) var(--ease);
+    }
+
+    .btn-pay-now:hover {
+      filter: brightness(1.08);
+    }
+
+    .btn-action-ghost {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--muted);
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      padding: var(--sp-2) var(--sp-4);
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      margin-top: var(--sp-3);
+    }
+
+    .btn-action-ghost:hover {
+      color: var(--fg);
+      background-color: var(--surface-2);
+    }
+
+    .spinner {
+      width: 24px;
+      height: 24px;
+      border: 3px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: var(--sp-4) auto;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body data-od-id="booking-success-screen">
+
+  <!-- STATE SWITCHER (P2.0: unpaid, paying, paid, payment-failed) -->
+  <div class="state-bar" data-od-id="state-switcher">
+    <div class="state-label">
+      <span>LAYAR 4: KONFIRMASI & BAYAR (GUIDED FLOW)</span>
+      <span>·</span>
+      <span style="color: var(--fg);">State:</span>
+    </div>
+    <div class="state-toggle-group">
+      <button type="button" class="state-btn" onclick="switchState('unpaid')" data-od-id="toggle-unpaid">Unpaid (Tahan Slot)</button>
+      <button type="button" class="state-btn" onclick="switchState('paying')" data-od-id="toggle-paying">Paying (Proses)</button>
+      <button type="button" class="state-btn active" onclick="switchState('paid')" data-od-id="toggle-paid">Paid (Terkonfirmasi)</button>
+      <button type="button" class="state-btn" onclick="switchState('payment-failed')" data-od-id="toggle-failed">Payment-failed</button>
+    </div>
+  </div>
+
+  <header>
+    <div class="container">
+      <div class="nav-inner">
+        <a href="landing.html" class="brand" data-od-id="nav-brand">
+          <div class="brand-mark">RG</div>
+          <span class="brand-title">Ruang Gema</span>
+        </a>
+        <nav style="display: flex; gap: var(--sp-2);">
+          <a href="booking-form.html" class="nav-link">← Pilih jadwal lain</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="container flow-wrapper">
+    <div class="step-pill">
+      <span>LANGKAH 3 DARI 3</span>
+      <span>·</span>
+      <span id="flow-step-label">BUKTI RESERVASI RESMI</span>
+    </div>
+
+    <!-- TICKET CARD (AC-6: booking_code, room, Asia/Jakarta time, DP amount) -->
+    <div class="ticket-card" data-od-id="confirmation-ticket">
+      
+      <div class="ticket-status-row">
+        <div>
+          <h1 id="screen-heading" style="font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 700;">
+            Slot Latihan Terkonfirmasi
+          </h1>
+          <p id="screen-sub" style="font-size: var(--text-sm); color: var(--muted); margin-top: 2px;">
+            DP 50% telah diterima. Jadwal lu sudah terkunci di sistem studio.
+          </p>
+        </div>
+        <div id="badge-container">
+          <span class="badge-status status-paid" id="ticket-badge">
+            <span>●</span>
+            <span id="ticket-badge-text">STATUS: LUNAS DP (PAID)</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- KODE BOOKING (AC-6) -->
+      <div class="booking-code-box" data-od-id="booking-code-card">
+        <div>
+          <div class="code-label">KODE BOOKING (TUNJUKKAN KE OPERATOR STUDIO)</div>
+          <div class="code-val" id="booking-code-display">RG-20260923-01J8R9</div>
+        </div>
+        <button type="button" class="btn-copy-code" onclick="copyCode()" data-od-id="btn-copy-code">
+          <svg id="copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/></svg>
+          <span id="copy-text">Salin kode</span>
+        </button>
+      </div>
+
+      <!-- DETAIL BOOKING (AC-6: Room, Local WIB Time, DP amount) -->
+      <table class="details-table" data-od-id="booking-details-table">
+        <tbody>
+          <tr>
+            <th>Ruangan Rehearsal</th>
+            <td>Studio A (6 × 5 Meter, Full Backline)</td>
+          </tr>
+          <tr>
+            <th>Waktu & Tanggal (WIB)</th>
+            <td class="val-mono">Rabu, 23 September 2026 · 19.00 – 21.00 WIB (2 jam)</td>
+          </tr>
+          <tr>
+            <th>Nama Pemesan / Band</th>
+            <td>Bagas Prakoso (The Southern)</td>
+          </tr>
+          <tr>
+            <th>Nomor WhatsApp</th>
+            <td class="val-mono">0812-9844-3210</td>
+          </tr>
+          <tr>
+            <th>Total Biaya Sewa</th>
+            <td class="val-mono">Rp 300.000</td>
+          </tr>
+          <tr>
+            <th>Uang Muka (DP 50% Lunas)</th>
+            <td class="val-mono" style="color: var(--ok); font-weight: 700;">Rp 150.000 (LUNAS via QRIS)</td>
+          </tr>
+          <tr>
+            <th>Sisa Pelunasan di Lokasi</th>
+            <td class="val-mono">Rp 150.000 (saat check-in di studio)</td>
+          </tr>
+          <tr>
+            <th>Lokasi Studio</th>
+            <td>Jl. Kemang Selatan VIII No. 12, Jakarta Selatan (021-7194-2260)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- STATE: UNPAID (Payment Box with Mock QRIS / Pay Button) -->
+      <div id="box-unpaid" class="payment-action-box" style="display: none;" data-od-id="payment-action-box">
+        <div style="font-family: var(--font-display); font-size: var(--text-lg); font-weight: 700;">
+          Selesaikan Pembayaran DP 50%
+        </div>
+        <div style="font-size: var(--text-xs); color: var(--muted); margin-top: 2px;">
+          Slot ditahan selama <strong style="color: var(--warn); font-family: var(--font-mono);">14:32</strong> menit. Scan QRIS di bawah atau klik tombol simulasi bayar:
+        </div>
+
+        <div class="mock-qris">
+          <div style="font-size: 10px; margin-bottom: 4px;">QRIS RUANG GEMA</div>
+          <div style="font-family: var(--font-mono); font-size: 11px; line-height: 1.15; letter-spacing: 1px; text-align: center;">▛▀▀▜<br>▌▘▐<br>▙▄▟</div>
+          <div style="font-size: 9px; margin-top: 6px;">NOMINAL: RP 150.000</div>
+        </div>
+
+        <button type="button" class="btn-pay-now" onclick="simulatePay()" data-od-id="btn-simulate-pay">
+          Bayar DP Rp 150.000 Sekarang
+        </button>
+      </div>
+
+      <!-- STATE: PAYING (Mock Gateway in progress) -->
+      <div id="box-paying" class="payment-action-box" style="display: none;" data-od-id="payment-processing-box">
+        <div class="spinner"></div>
+        <div style="font-family: var(--font-display); font-size: var(--text-lg); font-weight: 700;">
+          Menghubungi Payment Gateway...
+        </div>
+        <div style="font-size: var(--text-sm); color: var(--muted); margin-top: var(--sp-1);">
+          Memverifikasi tanda tangan webhook dan penyelesaian mutasi (AC-5 Idempotent Guard).
+        </div>
+      </div>
+
+      <!-- STATE: PAYMENT FAILED -->
+      <div id="box-failed" class="payment-action-box" style="display: none; border-color: var(--danger);" data-od-id="payment-failed-box">
+        <div style="font-family: var(--font-display); font-size: var(--text-lg); font-weight: 700; color: var(--danger);">
+          Pembayaran Tidak Berhasil
+        </div>
+        <div style="font-size: var(--text-sm); color: var(--muted); margin-top: var(--sp-1); max-width: 480px; margin-left: auto; margin-right: auto;">
+          Gateway melaporkan sesi pembayaran kedaluwarsa atau dibatalkan. Slot lu masih dalam batas waktu penahanan — silakan coba bayar kembali.
+        </div>
+        <button type="button" class="btn-pay-now" onclick="switchState('unpaid')" style="background-color: var(--surface-2); color: var(--fg); border: 1px solid var(--border-strong);">
+          Ulangi Pembayaran DP
+        </button>
+      </div>
+
+      <!-- STATE: PAID (Informasi Datang ke Studio) -->
+      <div id="box-paid-info" style="border-top: 1px solid var(--border); padding-top: var(--sp-4); display: flex; flex-direction: column; gap: var(--sp-2);">
+        <div style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--ok); display: flex; align-items: center; gap: 6px;">
+          <span>✓</span> Notifikasi WhatsApp dan tanda terima telah dikirim ke 0812-9844-3210.
+        </div>
+        <div style="font-size: var(--text-xs); color: var(--muted); line-height: 1.5;">
+          Harap hadir 10 menit sebelum jam latihan dimulai (18.50 WIB) untuk soundcheck dan persiapan instrumen. Operator kami siap di front desk.
+        </div>
+        <div style="margin-top: var(--sp-2);">
+          <a href="landing.html" class="btn-action-ghost">Selesai & Kembali ke Beranda</a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    function copyCode() {
+      const code = document.getElementById('booking-code-display').textContent;
+      navigator.clipboard.writeText(code).then(() => {
+        document.getElementById('copy-text').textContent = 'Tersalin!';
+        setTimeout(() => {
+          document.getElementById('copy-text').textContent = 'Salin kode';
+        }, 2000);
+      });
+    }
+
+    function simulatePay() {
+      switchState('paying');
+      setTimeout(() => {
+        switchState('paid');
+      }, 1200);
+    }
+
+    function switchState(stateName) {
+      document.querySelectorAll('.state-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.querySelector(`[data-od-id="toggle-${stateName}"]`);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      const badge = document.getElementById('ticket-badge');
+      const badgeText = document.getElementById('ticket-badge-text');
+      const boxUnpaid = document.getElementById('box-unpaid');
+      const boxPaying = document.getElementById('box-paying');
+      const boxFailed = document.getElementById('box-failed');
+      const boxPaidInfo = document.getElementById('box-paid-info');
+      const heading = document.getElementById('screen-heading');
+      const sub = document.getElementById('screen-sub');
+
+      boxUnpaid.style.display = 'none';
+      boxPaying.style.display = 'none';
+      boxFailed.style.display = 'none';
+      boxPaidInfo.style.display = 'none';
+
+      badge.className = 'badge-status';
+
+      if (stateName === 'unpaid') {
+        badge.classList.add('status-unpaid');
+        badgeText.textContent = 'STATUS: MENUNGGU PEMBAYARAN DP';
+        heading.textContent = 'Slot Ditahan — Menunggu Pembayaran';
+        sub.textContent = 'Slot sudah ditahan sementara. Selesaikan pembayaran uang muka 50% sebelum TTL berakhir.';
+        boxUnpaid.style.display = 'block';
+      } else if (stateName === 'paying') {
+        badge.classList.add('status-unpaid');
+        badgeText.textContent = 'STATUS: MEMPROSES PEMBAYARAN';
+        heading.textContent = 'Memverifikasi Pembayaran DP...';
+        sub.textContent = 'Mohon jangan menutup jendela browser ini.';
+        boxPaying.style.display = 'block';
+      } else if (stateName === 'paid') {
+        badge.classList.add('status-paid');
+        badgeText.textContent = 'STATUS: LUNAS DP (PAID)';
+        heading.textContent = 'Slot Latihan Terkonfirmasi';
+        sub.textContent = 'DP 50% telah diterima. Jadwal lu sudah terkunci di sistem studio.';
+        boxPaidInfo.style.display = 'block';
+      } else if (stateName === 'payment-failed') {
+        badge.classList.add('status-failed');
+        badgeText.textContent = 'STATUS: PEMBAYARAN GAGAL';
+        heading.textContent = 'Pembayaran Tidak Berhasil';
+        sub.textContent = 'Transaksi DP belum terverifikasi. Slot masih ditahan hingga waktu habis.';
+        boxFailed.style.display = 'block';
+      }
+    }
+  </script>
+</body>
+</html>

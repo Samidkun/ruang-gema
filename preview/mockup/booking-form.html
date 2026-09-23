@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pilih Jadwal & Tahan Slot — Ruang Gema Studio</title>
+  <style>
+    :root {
+      /* — Warna semantik DESIGN.md — */
+      --bg: oklch(0.19 0.012 265);
+      --surface: oklch(0.24 0.014 265);
+      --surface-2: oklch(0.29 0.016 265);
+      --fg: oklch(0.96 0.006 265);
+      --muted: oklch(0.70 0.012 265);
+      --border: oklch(0.34 0.014 265);
+      --border-strong: oklch(0.46 0.016 265);
+
+      --accent: oklch(0.78 0.155 78);
+      --accent-fg: oklch(0.20 0.030 78);
+      --ok: oklch(0.72 0.140 150);
+      --warn: oklch(0.80 0.140 85);
+      --danger: oklch(0.66 0.190 25);
+
+      /* — Tipografi — */
+      --font-display: "Bricolage Grotesque", "Archivo", system-ui, sans-serif;
+      --font-body: "Public Sans", "IBM Plex Sans", system-ui, sans-serif;
+      --font-mono: "JetBrains Mono", "IBM Plex Mono", ui-monospace, monospace;
+
+      --text-xs: 0.75rem;
+      --text-sm: 0.8125rem;
+      --text-base: 0.9375rem;
+      --text-lg: 1.125rem;
+      --text-xl: 1.375rem;
+      --text-2xl: 1.75rem;
+      --text-3xl: clamp(2rem, 4vw, 2.75rem);
+
+      /* — Spasi — */
+      --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
+      --sp-5: 24px; --sp-6: 32px; --sp-7: 48px; --sp-8: 64px;
+
+      /* — Radius bervariasi — */
+      --r-sm: 4px;
+      --r-md: 8px;
+      --r-lg: 14px;
+      --r-pill: 999px;
+
+      --shadow-1: 0 1px 2px oklch(0.12 0.02 265 / 0.5);
+      --shadow-2: 0 8px 24px oklch(0.12 0.02 265 / 0.45);
+
+      --dur-fast: 120ms;
+      --dur-base: 180ms;
+      --ease: cubic-bezier(0.2, 0, 0, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: 1.5;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 var(--sp-4);
+    }
+
+    /* State Switcher Bar */
+    .state-bar {
+      background-color: var(--surface);
+      border-bottom: 1px solid var(--border-strong);
+      padding: var(--sp-2) var(--sp-4);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--sp-2);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+    }
+
+    .state-label {
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: var(--sp-2);
+    }
+
+    .state-toggle-group {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-1);
+      background-color: var(--bg);
+      padding: 2px;
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+    }
+
+    .state-btn {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      padding: var(--sp-1) var(--sp-3);
+      border-radius: var(--r-sm);
+      cursor: pointer;
+      min-height: 32px;
+      display: inline-flex;
+      align-items: center;
+      transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+    }
+
+    .state-btn:hover {
+      color: var(--fg);
+      background-color: var(--surface);
+    }
+
+    .state-btn.active {
+      background-color: var(--surface-2);
+      color: var(--fg);
+      font-weight: 600;
+    }
+
+    /* Header */
+    header {
+      border-bottom: 1px solid var(--border);
+      background-color: var(--bg);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-2);
+      text-decoration: none;
+      color: var(--fg);
+    }
+
+    .brand-mark {
+      width: 28px;
+      height: 28px;
+      border-radius: var(--r-md);
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      font-weight: 700;
+      color: var(--fg);
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: var(--text-base);
+      font-weight: 700;
+    }
+
+    .nav-link {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--muted);
+      text-decoration: none;
+      padding: var(--sp-2) var(--sp-3);
+      border-radius: var(--r-md);
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .nav-link:hover {
+      color: var(--fg);
+      background-color: var(--surface);
+    }
+
+    /* Page Intro */
+    .flow-head {
+      padding: var(--sp-5) 0 var(--sp-3);
+    }
+
+    .step-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--sp-2);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--muted);
+      margin-bottom: var(--sp-2);
+    }
+
+    .flow-title {
+      font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: var(--sp-1);
+    }
+
+    .flow-sub {
+      color: var(--muted);
+      font-size: var(--text-sm);
+    }
+
+    /* State Alert Boxes (P2.4 Heuristic #9 & AC-4, AC-10) */
+    .alert-box {
+      border-radius: var(--r-lg);
+      padding: var(--sp-4);
+      margin-bottom: var(--sp-4);
+      display: flex;
+      align-items: flex-start;
+      gap: var(--sp-3);
+      font-size: var(--text-sm);
+    }
+
+    .alert-conflict {
+      background-color: var(--danger-tint);
+      border: 1px solid var(--danger);
+      color: var(--fg);
+    }
+
+    .alert-conflict .alert-icon {
+      color: var(--danger);
+      font-family: var(--font-mono);
+      font-weight: 700;
+    }
+
+    .alert-countdown {
+      background-color: var(--warn-tint);
+      border: 1px solid var(--warn);
+      color: var(--fg);
+    }
+
+    .alert-countdown .countdown-timer {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      font-size: var(--text-lg);
+      font-weight: 700;
+      color: var(--warn);
+    }
+
+    .alert-error {
+      background-color: var(--danger-tint);
+      border: 1px solid var(--danger);
+      color: var(--fg);
+    }
+
+    /* Flow Layout (Grid Slot Jam on Left, Booking Form on Right) */
+    .booking-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--sp-5);
+      margin-bottom: var(--sp-7);
+    }
+
+    @media (min-width: 900px) {
+      .booking-layout {
+        grid-template-columns: 1.35fr 1fr;
+        align-items: start;
+      }
+    }
+
+    /* Slot Picker Section */
+    .picker-panel {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: var(--sp-5);
+    }
+
+    .panel-header-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--sp-3);
+      padding-bottom: var(--sp-4);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: var(--sp-4);
+    }
+
+    .date-filter-group {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-2);
+    }
+
+    .input-date {
+      font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      background-color: var(--bg);
+      color: var(--fg);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: var(--sp-2) var(--sp-3);
+      min-height: 44px;
+    }
+
+    .room-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--sp-1);
+    }
+
+    .room-tab-btn {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      background-color: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--r-pill);
+      padding: var(--sp-1) var(--sp-3);
+      color: var(--muted);
+      cursor: pointer;
+      min-height: 36px;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .room-tab-btn.active {
+      background-color: var(--fg);
+      color: var(--bg);
+      border-color: var(--fg);
+      font-weight: 600;
+    }
+
+    /* SIGNATURE BET: Kisi waktu monospace ruangan x jam */
+    .slots-grid-title {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--sp-3);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .slots-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--sp-2);
+      margin-bottom: var(--sp-4);
+    }
+
+    @media (min-width: 520px) {
+      .slots-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (min-width: 720px) {
+      .slots-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .slot-cell {
+      background-color: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      padding: var(--sp-2) var(--sp-3);
+      text-align: left;
+      cursor: pointer;
+      min-height: 56px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 2px;
+      transition: background-color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+    }
+
+    .slot-cell:hover:not([aria-disabled="true"]) {
+      background-color: var(--surface-2);
+      border-color: var(--border-strong);
+    }
+
+    .slot-cell.selected {
+      background-color: var(--surface-2);
+      border-color: var(--accent); /* Accent used as indicator */
+    }
+
+    .slot-cell[aria-disabled="true"] {
+      opacity: 0.45;
+      cursor: not-allowed;
+      background-color: var(--surface);
+      border-color: var(--border);
+    }
+
+    .slot-time {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      font-size: var(--text-sm);
+      font-weight: 600;
+      color: var(--fg);
+    }
+
+    .slot-state-label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .slot-state-label.free {
+      color: var(--ok);
+    }
+
+    .slot-state-label.taken {
+      color: var(--muted);
+    }
+
+    .slot-legend {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-4);
+      padding-top: var(--sp-3);
+      border-top: 1px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--muted);
+    }
+
+    /* Customer Form Panel (Right) */
+    .form-panel {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: var(--sp-5);
+      box-shadow: var(--shadow-1);
+    }
+
+    .panel-heading {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: 700;
+      margin-bottom: var(--sp-1);
+    }
+
+    .panel-sub {
+      font-size: var(--text-xs);
+      color: var(--muted);
+      margin-bottom: var(--sp-4);
+    }
+
+    .field-group {
+      margin-bottom: var(--sp-4);
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-1);
+    }
+
+    .field-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--fg);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .field-input {
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      background-color: var(--bg);
+      color: var(--fg);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: var(--sp-2) var(--sp-3);
+      min-height: 44px;
+      outline: none;
+      transition: border-color var(--dur-fast) var(--ease);
+    }
+
+    .field-input:focus {
+      border-color: var(--border-strong);
+    }
+
+    .field-input.has-error {
+      border-color: var(--danger);
+    }
+
+    .field-error-msg {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--danger);
+    }
+
+    /* Calculation & DP Summary (AC-12: Server derives price, client shows preview) */
+    .summary-card {
+      background-color: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      padding: var(--sp-3);
+      margin-bottom: var(--sp-4);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+    }
+
+    .summary-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--sp-1);
+      color: var(--muted);
+    }
+
+    .summary-row.total {
+      margin-top: var(--sp-2);
+      padding-top: var(--sp-2);
+      border-top: 1px solid var(--border);
+      color: var(--fg);
+      font-size: var(--text-sm);
+      font-weight: 700;
+    }
+
+    .summary-row.dp {
+      color: var(--fg);
+      font-weight: 700;
+      font-size: var(--text-base);
+      margin-top: var(--sp-1);
+    }
+
+    /* 1 Primary CTA Button */
+    .btn-submit {
+      width: 100%;
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: var(--text-base);
+      color: var(--accent-fg);
+      background-color: var(--accent); /* Accent 1/2 */
+      border: 1px solid transparent;
+      border-radius: var(--r-md);
+      padding: 0 var(--sp-4);
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--sp-2);
+      cursor: pointer;
+      text-decoration: none;
+      transition: filter var(--dur-fast) var(--ease);
+    }
+
+    .btn-submit:hover {
+      filter: brightness(1.08);
+    }
+
+    .btn-cancel-hold {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--danger);
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      padding: var(--sp-2);
+      min-height: 44px;
+      width: 100%;
+      margin-top: var(--sp-2);
+      cursor: pointer;
+    }
+
+    .btn-cancel-hold:hover {
+      background-color: var(--surface-2);
+    }
+  </style>
+</head>
+<body data-od-id="booking-form-screen">
+
+  <!-- STATE SWITCHER (P2.0 Screen Inventory: happy, slot-taken, pending, error) -->
+  <div class="state-bar" data-od-id="state-switcher">
+    <div class="state-label">
+      <span>LAYAR 3: JADWAL & DATA DIRI (GUIDED FLOW)</span>
+      <span>·</span>
+      <span style="color: var(--fg);">State:</span>
+    </div>
+    <div class="state-toggle-group">
+      <button type="button" class="state-btn active" onclick="switchState('happy')" data-od-id="toggle-happy">Happy</button>
+      <button type="button" class="state-btn" onclick="switchState('slot-taken')" data-od-id="toggle-taken">Slot-taken (409)</button>
+      <button type="button" class="state-btn" onclick="switchState('pending')" data-od-id="toggle-pending">Pending / Hold</button>
+      <button type="button" class="state-btn" onclick="switchState('error')" data-od-id="toggle-error">Error (422)</button>
+    </div>
+  </div>
+
+  <header>
+    <div class="container">
+      <div class="nav-inner">
+        <a href="landing.html" class="brand" data-od-id="nav-brand">
+          <div class="brand-mark">RG</div>
+          <span class="brand-title">Ruang Gema</span>
+        </a>
+        <nav style="display: flex; gap: var(--sp-2);">
+          <a href="service-list.html" class="nav-link">← Kembali ke ruangan</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="flow-head">
+      <div class="step-indicator">
+        <span>LANGKAH 2 DARI 3</span>
+        <span>·</span>
+        <span>PILIH SLOT & DATA PEMESAN</span>
+      </div>
+      <h1 class="flow-title">Tahan Slot Ruang Rehearsal</h1>
+      <p class="flow-sub">Pilih tanggal dan jam kosong di kisi waktu. Slot akan ditahan selama 15 menit begitu data dikirim.</p>
+    </div>
+
+    <!-- STATE ALERT: SLOT-TAKEN 409 (AC-4: inline error naming the hour + preserved input) -->
+    <div id="alert-slot-taken" class="alert-box alert-conflict" style="display: none;" data-od-id="alert-slot-taken">
+      <span class="alert-icon">[ 409 BENTROK ]</span>
+      <div>
+        <strong>Slot 19.00 – 20.00 WIB baru saja diambil oleh band lain.</strong>
+        <div style="color: var(--muted); margin-top: 2px;">
+          Data nama dan telepon lu tetap tersimpan. Jadwal di bawah telah diperbarui otomatis — silakan pilih jam alternatif (misal: 20.00 – 21.00 WIB).
+        </div>
+      </div>
+    </div>
+
+    <!-- STATE ALERT: PENDING HOLD COUNTDOWN (AC-10: 15-minute hold TTL) -->
+    <div id="alert-pending-hold" class="alert-box alert-countdown" style="display: none;" data-od-id="alert-pending-hold">
+      <div>
+        <div style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--muted);">STATUS: PENDING PAYMENT</div>
+        <div style="display: flex; align-items: baseline; gap: var(--sp-2); margin-top: 2px;">
+          <span>Slot Studio A (19.00–20.00 WIB) sedang ditahan:</span>
+          <span class="countdown-timer" id="hold-clock">14:48</span>
+        </div>
+        <div style="color: var(--muted); font-size: var(--text-xs); margin-top: 2px;">
+          Segera lunasi DP 50% sebelum waktu habis, atau slot akan dilepas otomatis untuk umum.
+        </div>
+      </div>
+    </div>
+
+    <!-- STATE ALERT: VALIDATION ERROR 422 -->
+    <div id="alert-error-422" class="alert-box alert-error" style="display: none;" data-od-id="alert-error-422">
+      <span style="font-family: var(--font-mono); font-weight: 700; color: var(--danger);">[ VALIDASI GAGAL ]</span>
+      <div>
+        <strong>Nomor WhatsApp / telepon tidak valid.</strong>
+        <div style="color: var(--muted); margin-top: 2px;">Pastikan nomor aktif di Indonesia (format: 08xx atau +628xx) agar kode booking dapat dikirimkan.</div>
+      </div>
+    </div>
+
+    <div class="booking-layout">
+
+      <!-- LEFT: KISI WAKTU / AVAILABILITY GRID (AC-3) -->
+      <section class="picker-panel" data-od-id="slot-picker-panel">
+        <div class="panel-header-row">
+          <div class="date-filter-group">
+            <label for="booking-date" class="field-label" style="margin-bottom: 0;">Tanggal:</label>
+            <input type="date" id="booking-date" class="input-date" value="2026-09-23" onchange="renderSlots()" data-od-id="input-date">
+          </div>
+
+          <div class="room-pills" data-od-id="room-selector-pills">
+            <button type="button" class="room-tab-btn active" onclick="switchRoom('Studio A', 150000)">Studio A</button>
+            <button type="button" class="room-tab-btn" onclick="switchRoom('Studio B', 120000)">Studio B</button>
+            <button type="button" class="room-tab-btn" onclick="switchRoom('Studio C', 90000)">Studio C</button>
+            <button type="button" class="room-tab-btn" onclick="switchRoom('Studio D', 250000)">Studio D</button>
+          </div>
+        </div>
+
+        <div class="slots-grid-title">
+          <span id="grid-room-label">KISI JAM · STUDIO A (RP 150.000/JAM)</span>
+          <span style="color: var(--muted); font-size: 0.7rem;">09.00 – 23.00 WIB</span>
+        </div>
+
+        <!-- SIGNATURE BET: Monospace Slot Grid with Tabular Numbers -->
+        <div class="slots-grid" id="slots-container" data-od-id="slots-grid">
+          <!-- Rendered via JS -->
+        </div>
+
+        <div class="slot-legend">
+          <span style="display: flex; align-items: center; gap: 4px;">
+            <span style="width: 8px; height: 8px; border-radius: var(--r-pill); background-color: var(--ok);"></span>
+            Tersedia
+          </span>
+          <span style="display: flex; align-items: center; gap: 4px;">
+            <span style="width: 8px; height: 8px; border-radius: var(--r-pill); background-color: var(--border);"></span>
+            Terisi / Ditahan
+          </span>
+          <span style="display: flex; align-items: center; gap: 4px;">
+            <span style="width: 8px; height: 8px; border-radius: var(--r-pill); background-color: var(--accent);"></span>
+            Pilihan Lu
+          </span>
+        </div>
+      </section>
+
+      <!-- RIGHT: CUSTOMER DATA & DP SUMMARY (AC-4, AC-12) -->
+      <section class="form-panel" data-od-id="customer-form-panel">
+        <h2 class="panel-heading">Data Pemesan</h2>
+        <p class="panel-sub">Konfirmasi booking dan tiket masuk akan dikirimkan ke nomor ini.</p>
+
+        <form id="booking-submit-form" onsubmit="event.preventDefault(); proceedToSuccess();">
+          <div class="field-group">
+            <label for="cust-name" class="field-label">Nama Pemesan / Nama Band</label>
+            <input type="text" id="cust-name" class="field-input" value="Bagas Prakoso (The Southern)" required data-od-id="input-name">
+          </div>
+
+          <div class="field-group">
+            <label for="cust-phone" class="field-label">Nomor WhatsApp / HP</label>
+            <input type="tel" id="cust-phone" class="field-input" value="0812-9844-3210" required data-od-id="input-phone">
+            <div id="phone-err" class="field-error-msg" style="display: none;">Format nomor salah (contoh: 081298443210).</div>
+          </div>
+
+          <!-- DP 50% Calculation preview (AC-12: client never sends price, only derives view) -->
+          <div class="summary-card" data-od-id="price-summary-card">
+            <div class="summary-row">
+              <span>Ruangan:</span>
+              <span id="sum-room" style="color: var(--fg); font-weight: 600;">Studio A</span>
+            </div>
+            <div class="summary-row">
+              <span>Slot Terpilih:</span>
+              <span id="sum-slot" style="color: var(--fg);">19.00 – 21.00 WIB (2 jam)</span>
+            </div>
+            <div class="summary-row">
+              <span>Tarif per Jam:</span>
+              <span id="sum-rate">Rp 150.000</span>
+            </div>
+            <div class="summary-row total">
+              <span>Total Biaya Sewa:</span>
+              <span id="sum-total">Rp 300.000</span>
+            </div>
+            <div class="summary-row dp">
+              <span>Uang Muka (DP 50%):</span>
+              <span id="sum-dp">Rp 150.000</span>
+            </div>
+          </div>
+
+          <!-- 1 Primary Action per viewport -->
+          <button type="submit" class="btn-submit" id="btn-submit-action" data-od-id="btn-submit-hold">
+            <span>Tahan slot & bayar DP</span>
+            <span style="font-family: var(--font-mono);">→</span>
+          </button>
+
+          <!-- User freedom / control (P2.4 Heuristic #3: Batalkan slot ditahan) -->
+          <button type="button" id="btn-cancel-hold-action" class="btn-cancel-hold" style="display: none;" onclick="cancelHeldSlot()" data-od-id="btn-cancel-hold">
+            ✕ Batalkan penahanan slot ini
+          </button>
+        </form>
+      </section>
+
+    </div>
+  </main>
+
+  <script>
+    let currentRoom = 'Studio A';
+    let currentRate = 150000;
+    let selectedSlots = ['19.00', '20.00'];
+    let takenSlots = ['14.00', '15.00', '18.00'];
+
+    const hours = [
+      '09.00', '10.00', '11.00', '12.00', '13.00', '14.00',
+      '15.00', '16.00', '17.00', '18.00', '19.00', '20.00',
+      '21.00', '22.00'
+    ];
+
+    function renderSlots() {
+      const container = document.getElementById('slots-container');
+      container.innerHTML = '';
+
+      hours.forEach(hr => {
+        const nextHour = (parseInt(hr) + 1).toString().padStart(2, '0') + '.00';
+        const isTaken = takenSlots.includes(hr);
+        const isSelected = selectedSlots.includes(hr);
+
+        const cell = document.createElement('button');
+        cell.type = 'button';
+        cell.className = 'slot-cell' + (isSelected ? ' selected' : '');
+        cell.setAttribute('data-od-id', `slot-${hr.replace('.', '')}`);
+
+        if (isTaken) {
+          cell.setAttribute('aria-disabled', 'true');
+          cell.innerHTML = `
+            <span class="slot-time">${hr}–${nextHour}</span>
+            <span class="slot-state-label taken">✕ Terisi</span>
+          `;
+        } else {
+          cell.setAttribute('aria-disabled', 'false');
+          cell.onclick = () => toggleSlot(hr);
+          cell.innerHTML = `
+            <span class="slot-time">${hr}–${nextHour}</span>
+            <span class="slot-state-label free">${isSelected ? '● Dipilih' : '○ Kosong'}</span>
+          `;
+        }
+
+        container.appendChild(cell);
+      });
+
+      updateSummary();
+    }
+
+    function toggleSlot(hr) {
+      if (selectedSlots.includes(hr)) {
+        selectedSlots = selectedSlots.filter(s => s !== hr);
+      } else {
+        selectedSlots.push(hr);
+      }
+      selectedSlots.sort();
+      renderSlots();
+    }
+
+    function switchRoom(roomName, rate) {
+      currentRoom = roomName;
+      currentRate = rate;
+      document.querySelectorAll('.room-tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent === roomName);
+      });
+      document.getElementById('grid-room-label').textContent = `KISI JAM · ${roomName.toUpperCase()} (RP ${rate.toLocaleString('id-ID')}/JAM)`;
+      renderSlots();
+    }
+
+    function updateSummary() {
+      document.getElementById('sum-room').textContent = currentRoom;
+      const hoursCount = selectedSlots.length;
+
+      if (hoursCount === 0) {
+        document.getElementById('sum-slot').textContent = 'Belum ada slot dipilih';
+        document.getElementById('sum-rate').textContent = `Rp ${currentRate.toLocaleString('id-ID')}`;
+        document.getElementById('sum-total').textContent = 'Rp 0';
+        document.getElementById('sum-dp').textContent = 'Rp 0';
+      } else {
+        const first = selectedSlots[0];
+        const lastHourInt = parseInt(selectedSlots[selectedSlots.length - 1]) + 1;
+        const lastFormatted = lastHourInt.toString().padStart(2, '0') + '.00';
+        document.getElementById('sum-slot').textContent = `${first} – ${lastFormatted} WIB (${hoursCount} jam)`;
+        document.getElementById('sum-rate').textContent = `Rp ${currentRate.toLocaleString('id-ID')}`;
+        const total = hoursCount * currentRate;
+        const dp = total * 0.5;
+        document.getElementById('sum-total').textContent = `Rp ${total.toLocaleString('id-ID')}`;
+        document.getElementById('sum-dp').textContent = `Rp ${dp.toLocaleString('id-ID')}`;
+      }
+    }
+
+    function proceedToSuccess() {
+      window.location.href = 'booking-success.html';
+    }
+
+    function cancelHeldSlot() {
+      switchState('happy');
+    }
+
+    function switchState(stateName) {
+      document.querySelectorAll('.state-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.querySelector(`[data-od-id="toggle-${stateName}"]`);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      document.getElementById('alert-slot-taken').style.display = 'none';
+      document.getElementById('alert-pending-hold').style.display = 'none';
+      document.getElementById('alert-error-422').style.display = 'none';
+      document.getElementById('phone-err').style.display = 'none';
+      document.getElementById('cust-phone').classList.remove('has-error');
+      document.getElementById('btn-cancel-hold-action').style.display = 'none';
+
+      const nameInput = document.getElementById('cust-name');
+      const phoneInput = document.getElementById('cust-phone');
+
+      if (stateName === 'happy') {
+        takenSlots = ['14.00', '15.00', '18.00'];
+        selectedSlots = ['19.00', '20.00'];
+      } else if (stateName === 'slot-taken') {
+        // AC-4: Slot 19.00 taken by another client, grid refreshes, inputs preserved!
+        takenSlots = ['14.00', '15.00', '18.00', '19.00'];
+        selectedSlots = ['20.00', '21.00']; // auto-pick next slot
+        document.getElementById('alert-slot-taken').style.display = 'flex';
+        // Note: nameInput and phoneInput retain their exact values!
+      } else if (stateName === 'pending') {
+        // AC-10: Slot held countdown
+        selectedSlots = ['19.00', '20.00'];
+        document.getElementById('alert-pending-hold').style.display = 'flex';
+        document.getElementById('btn-cancel-hold-action').style.display = 'block';
+      } else if (stateName === 'error') {
+        document.getElementById('alert-error-422').style.display = 'flex';
+        document.getElementById('phone-err').style.display = 'block';
+        phoneInput.classList.add('has-error');
+      }
+
+      renderSlots();
+    }
+
+    // Init
+    renderSlots();
+  </script>
+</body>
+</html>

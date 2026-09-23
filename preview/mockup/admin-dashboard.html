@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jadwal Harian Studio (Owner) — Ruang Gema Studio</title>
+  <style>
+    :root {
+      /* — Warna semantik DESIGN.md — */
+      --bg: oklch(0.19 0.012 265);
+      --surface: oklch(0.24 0.014 265);
+      --surface-2: oklch(0.29 0.016 265);
+      --fg: oklch(0.96 0.006 265);
+      --muted: oklch(0.70 0.012 265);
+      --border: oklch(0.34 0.014 265);
+      --border-strong: oklch(0.46 0.016 265);
+
+      --accent: oklch(0.78 0.155 78);
+      --accent-fg: oklch(0.20 0.030 78);
+      --ok: oklch(0.72 0.140 150);
+      --warn: oklch(0.80 0.140 85);
+      --danger: oklch(0.66 0.190 25);
+
+      /* — Tipografi — */
+      --font-display: "Bricolage Grotesque", "Archivo", system-ui, sans-serif;
+      --font-body: "Public Sans", "IBM Plex Sans", system-ui, sans-serif;
+      --font-mono: "JetBrains Mono", "IBM Plex Mono", ui-monospace, monospace;
+
+      --text-xs: 0.75rem;
+      --text-sm: 0.8125rem;
+      --text-base: 0.9375rem;
+      --text-lg: 1.125rem;
+      --text-xl: 1.375rem;
+      --text-2xl: 1.75rem;
+      --text-3xl: clamp(2rem, 4vw, 2.75rem);
+
+      /* — Spasi — */
+      --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px;
+      --sp-5: 24px; --sp-6: 32px; --sp-7: 48px; --sp-8: 64px;
+
+      /* — Radius bervariasi — */
+      --r-sm: 4px;
+      --r-md: 8px;
+      --r-lg: 14px;
+      --r-pill: 999px;
+
+      --shadow-1: 0 1px 2px oklch(0.12 0.02 265 / 0.5);
+      --shadow-2: 0 8px 24px oklch(0.12 0.02 265 / 0.45);
+
+      --dur-fast: 120ms;
+      --dur-base: 180ms;
+      --ease: cubic-bezier(0.2, 0, 0, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--fg);
+      font-family: var(--font-body);
+      font-size: var(--text-base);
+      line-height: 1.4;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* State Switcher Bar */
+    .state-bar {
+      background-color: var(--surface);
+      border-bottom: 1px solid var(--border-strong);
+      padding: var(--sp-2) var(--sp-4);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--sp-2);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+    }
+
+    .state-label {
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: var(--sp-2);
+    }
+
+    .state-toggle-group {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-1);
+      background-color: var(--bg);
+      padding: 2px;
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+    }
+
+    .state-btn {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      padding: var(--sp-1) var(--sp-3);
+      border-radius: var(--r-sm);
+      cursor: pointer;
+      min-height: 32px;
+      display: inline-flex;
+      align-items: center;
+      transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+    }
+
+    .state-btn:hover {
+      color: var(--fg);
+      background-color: var(--surface);
+    }
+
+    .state-btn.active {
+      background-color: var(--surface-2);
+      color: var(--fg);
+      font-weight: 600;
+    }
+
+    /* Dashboard Header */
+    .dash-header {
+      background-color: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 var(--sp-4);
+    }
+
+    .dash-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-3);
+    }
+
+    .brand-mark {
+      width: 28px;
+      height: 28px;
+      border-radius: var(--r-md);
+      background-color: var(--bg);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      font-weight: 700;
+      color: var(--fg);
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: var(--text-base);
+      font-weight: 700;
+    }
+
+    .owner-tag {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      background-color: var(--surface-2);
+      padding: 2px var(--sp-2);
+      border-radius: var(--r-pill);
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-2);
+    }
+
+    .btn-public-site {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--muted);
+      text-decoration: none;
+      padding: var(--sp-1) var(--sp-3);
+      border-radius: var(--r-md);
+      border: 1px solid var(--border);
+      min-height: 38px;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .btn-public-site:hover {
+      background-color: var(--surface-2);
+      color: var(--fg);
+    }
+
+    /* Control Bar: Date Selector & Metrics */
+    .dash-toolbar {
+      padding: var(--sp-3) var(--sp-4);
+      background-color: var(--bg);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--sp-3);
+    }
+
+    .date-control {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-2);
+    }
+
+    .date-nav-btn {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      background-color: var(--surface);
+      color: var(--fg);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: var(--sp-2) var(--sp-3);
+      min-height: 38px;
+      cursor: pointer;
+    }
+
+    .date-nav-btn:hover {
+      background-color: var(--surface-2);
+    }
+
+    .current-date-badge {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      font-size: var(--text-sm);
+      font-weight: 700;
+      color: var(--fg);
+      padding: var(--sp-1) var(--sp-3);
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      min-height: 38px;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    /* Dense Key Metrics */
+    .metrics-strip {
+      display: flex;
+      align-items: center;
+      gap: var(--sp-4);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+    }
+
+    .metric-item {
+      display: flex;
+      align-items: baseline;
+      gap: var(--sp-2);
+    }
+
+    .metric-val {
+      font-size: var(--text-base);
+      font-weight: 700;
+      color: var(--fg);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .metric-val.income {
+      color: var(--ok);
+    }
+
+    /* ARCHETYPE: EXECUTIVE DASHBOARD — TIMELINE RUANGAN X JAM (PADAT) */
+    .timeline-view-container {
+      padding: var(--sp-4);
+      overflow-x: auto;
+    }
+
+    .timeline-table-board {
+      width: 100%;
+      min-width: 960px;
+      border-collapse: collapse;
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      box-shadow: var(--shadow-1);
+    }
+
+    .timeline-table-board th,
+    .timeline-table-board td {
+      border: 1px solid var(--border);
+      padding: var(--sp-2);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .timeline-table-board th {
+      background-color: var(--surface-2);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      position: sticky;
+      top: 0;
+    }
+
+    .col-room {
+      width: 160px;
+      background-color: var(--surface-2) !important;
+    }
+
+    .room-header-cell {
+      padding: var(--sp-3) var(--sp-2);
+    }
+
+    .room-cell-title {
+      font-family: var(--font-display);
+      font-size: var(--text-base);
+      font-weight: 700;
+      color: var(--fg);
+    }
+
+    .room-cell-rate {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    .time-slot-cell {
+      height: 84px;
+      position: relative;
+      background-color: var(--bg);
+      transition: background-color var(--dur-fast) var(--ease);
+      padding: 4px;
+    }
+
+    .time-slot-cell:hover {
+      background-color: var(--surface);
+    }
+
+    /* Booking Block Cards in Grid */
+    .booking-block {
+      background-color: var(--surface);
+      border: 1px solid var(--border-strong);
+      border-left: 3px solid var(--ok);
+      border-radius: var(--r-sm);
+      padding: var(--sp-2);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 2px;
+      cursor: pointer;
+    }
+
+    .booking-block.pending {
+      border-left-color: var(--warn);
+      background-color: var(--warn-tint);
+    }
+
+    .booking-block.cancelled {
+      border-left-color: var(--danger);
+      background-color: var(--danger-tint);
+      opacity: 0.8;
+    }
+
+    .b-customer {
+      font-family: var(--font-display);
+      font-size: var(--text-xs);
+      font-weight: 700;
+      color: var(--fg);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .b-phone {
+      font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      font-size: 0.7rem;
+      color: var(--muted);
+    }
+
+    .b-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      margin-top: 2px;
+    }
+
+    .b-code {
+      color: var(--muted);
+    }
+
+    .badge-paid-tiny {
+      color: var(--ok);
+      font-weight: 600;
+    }
+
+    .badge-pending-tiny {
+      color: var(--warn);
+      font-weight: 600;
+    }
+
+    .badge-cancelled-tiny {
+      color: var(--danger);
+      font-weight: 600;
+    }
+
+    /* Slot Empty indicator */
+    .slot-empty-label {
+      font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+      padding: var(--sp-1);
+    }
+
+    /* Cancel Modal (AC-9 & Ruling R3) */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.75);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      padding: var(--sp-4);
+    }
+
+    .modal-dialog {
+      background-color: var(--surface);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--r-lg);
+      padding: var(--sp-5);
+      width: 100%;
+      max-width: 480px;
+      box-shadow: var(--shadow-2);
+    }
+
+    .modal-title {
+      font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: 700;
+      margin-bottom: var(--sp-2);
+    }
+
+    .modal-desc {
+      font-size: var(--text-sm);
+      color: var(--muted);
+      margin-bottom: var(--sp-4);
+      line-height: 1.45;
+    }
+
+    .form-group {
+      margin-bottom: var(--sp-4);
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-1);
+    }
+
+    .modal-input {
+      font-family: var(--font-body);
+      font-size: var(--text-sm);
+      background-color: var(--bg);
+      color: var(--fg);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: var(--sp-2) var(--sp-3);
+      min-height: 44px;
+    }
+
+    .modal-actions {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: var(--sp-3);
+      border-top: 1px solid var(--border);
+      padding-top: var(--sp-4);
+    }
+
+    .btn-cancel-action {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--muted);
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      padding: 0 var(--sp-3);
+      min-height: 44px;
+      cursor: pointer;
+    }
+
+    .btn-confirm-danger {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: var(--text-sm);
+      color: var(--fg);
+      background-color: var(--danger);
+      border: none;
+      border-radius: var(--r-md);
+      padding: 0 var(--sp-4);
+      min-height: 44px;
+      cursor: pointer;
+    }
+
+    /* EMPTY STATE (P2.4 teaching microcopy) */
+    .empty-board-banner {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: var(--sp-6) var(--sp-5);
+      text-align: center;
+      max-width: 600px;
+      margin: var(--sp-6) auto;
+    }
+
+    /* ERROR 401/403 STATE (AC-7) */
+    .error-auth-banner {
+      background-color: var(--surface);
+      border: 1px solid var(--danger);
+      border-radius: var(--r-lg);
+      padding: var(--sp-6) var(--sp-5);
+      text-align: center;
+      max-width: 520px;
+      margin: var(--sp-6) auto;
+    }
+
+    .login-box {
+      margin-top: var(--sp-4);
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-3);
+    }
+
+    /* SKELETON LOADER FOR DASHBOARD */
+    .skeleton-bar {
+      height: 20px;
+      background: linear-gradient(90deg, var(--surface) 25%, var(--surface-2) 50%, var(--surface) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: var(--r-sm);
+      margin-bottom: var(--sp-2);
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* Pagination Strip (AC-11: meta.per_page <= 50) */
+    .pagination-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--sp-3) var(--sp-4);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+    }
+  </style>
+</head>
+<body data-od-id="admin-dashboard-screen">
+
+  <!-- STATE SWITCHER (P2.0 Screen Inventory: happy, loading, empty, error, cancelled) -->
+  <div class="state-bar" data-od-id="state-switcher">
+    <div class="state-label">
+      <span>LAYAR 5: JADWAL HARIAN OWNER (EXECUTIVE DASHBOARD)</span>
+      <span>·</span>
+      <span style="color: var(--fg);">State:</span>
+    </div>
+    <div class="state-toggle-group">
+      <button type="button" class="state-btn active" onclick="switchState('happy')" data-od-id="toggle-happy">Happy</button>
+      <button type="button" class="state-btn" onclick="switchState('loading')" data-od-id="toggle-loading">Loading</button>
+      <button type="button" class="state-btn" onclick="switchState('empty')" data-od-id="toggle-empty">Empty</button>
+      <button type="button" class="state-btn" onclick="switchState('error')" data-od-id="toggle-error">Error (401/403)</button>
+      <button type="button" class="state-btn" onclick="switchState('cancelled')" data-od-id="toggle-cancelled">Cancelled (AC-9)</button>
+    </div>
+  </div>
+
+  <header class="dash-header">
+    <div class="dash-nav">
+      <div class="brand-group">
+        <div class="brand-mark">RG</div>
+        <span class="brand-title">Ruang Gema</span>
+        <span class="owner-tag">PANEL OWNER</span>
+      </div>
+      <div class="nav-actions">
+        <a href="landing.html" class="btn-public-site">Lihat web publik ↗</a>
+      </div>
+    </div>
+    <h1 class="dash-title" style="font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 700; margin-top: var(--sp-4);">Jadwal Harian Studio</h1>
+  </header>
+
+  <!-- DASHBOARD TOOLBAR: Control Bar & Metrics -->
+  <div class="dash-toolbar" id="toolbar-panel" data-od-id="admin-toolbar">
+    <div class="date-control">
+      <button type="button" class="date-nav-btn">← Kemarin</button>
+      <div class="current-date-badge">RABU, 23 SEPTEMBER 2026</div>
+      <button type="button" class="date-nav-btn">Besok →</button>
+    </div>
+
+    <!-- DENSE METRICS -->
+    <div class="metrics-strip">
+      <div class="metric-item">
+        <span style="color: var(--muted);">Okupansi Hari Ini:</span>
+        <span class="metric-val" id="metric-occ">14 / 56 Jam (25%)</span>
+      </div>
+      <div class="metric-item">
+        <span style="color: var(--muted);">Total DP Terkumpul:</span>
+        <span class="metric-val income" id="metric-rev">Rp 1.050.000</span>
+      </div>
+      <div class="metric-item">
+        <span style="color: var(--muted);">Menunggu Bayar:</span>
+        <span class="metric-val" id="metric-pending" style="color: var(--warn);">1 Slot</span>
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <!-- STATE 1: HAPPY (Timeline Ruangan x Jam) -->
+    <div id="view-happy" class="timeline-view-container" data-od-id="view-happy">
+      <table class="timeline-table-board" data-od-id="schedule-matrix">
+        <thead>
+          <tr>
+            <th class="col-room">Ruangan</th>
+            <th>09.00 – 12.00 WIB (Pagi)</th>
+            <th>13.00 – 17.00 WIB (Siang)</th>
+            <th>18.00 – 20.00 WIB (Sore/Malam)</th>
+            <th>20.00 – 23.00 WIB (Malam)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- ROW 1: STUDIO A -->
+          <tr>
+            <td class="col-room room-header-cell">
+              <div class="room-cell-title">Studio A</div>
+              <div class="room-cell-rate">6×5m · Rp 150k/jam</div>
+            </td>
+            <td class="time-slot-cell">
+              <div class="slot-empty-label">09.00 - 12.00 (Kosong)</div>
+            </td>
+            <td class="time-slot-cell">
+              <div class="booking-block" onclick="openCancelModal('RG-20260923-01J8R4', 'Sunset Jam Band', '0813-1122-3344', 'Studio A', '14.00 – 16.00 WIB', 'Rp 150.000', 'paid')">
+                <div class="b-customer">Sunset Jam Band</div>
+                <div class="b-phone">0813-1122-3344 (14.00–16.00)</div>
+                <div class="b-foot">
+                  <span class="b-code">RG-01J8R4</span>
+                  <span class="badge-paid-tiny">● DP Lunas</span>
+                </div>
+              </div>
+            </td>
+            <td class="time-slot-cell">
+              <div class="booking-block" id="booking-bagas-card" onclick="openCancelModal('RG-20260923-01J8R9', 'Bagas Prakoso (The Southern)', '0812-9844-3210', 'Studio A', '19.00 – 21.00 WIB', 'Rp 150.000', 'paid')">
+                <div class="b-customer" id="bagas-name">Bagas Prakoso (The Southern)</div>
+                <div class="b-phone" id="bagas-detail">0812-9844-3210 (19.00–21.00)</div>
+                <div class="b-foot">
+                  <span class="b-code">RG-01J8R9</span>
+                  <span class="badge-paid-tiny" id="bagas-badge">● DP Lunas</span>
+                </div>
+              </div>
+            </td>
+            <td class="time-slot-cell">
+              <div class="slot-empty-label">21.00 - 23.00 (Kosong)</div>
+            </td>
+          </tr>
+
+          <!-- ROW 2: STUDIO B -->
+          <tr>
+            <td class="col-room room-header-cell">
+              <div class="room-cell-title">Studio B</div>
+              <div class="room-cell-rate">5×4m · Rp 120k/jam</div>
+            </td>
+            <td class="time-slot-cell">
+              <div class="booking-block" onclick="openCancelModal('RG-20260923-01J8R5', 'Reza Aditya', '0856-7890-1234', 'Studio B', '10.00 – 12.00 WIB', 'Rp 120.000', 'paid')">
+                <div class="b-customer">Reza Aditya (Solo Drum)</div>
+                <div class="b-phone">0856-7890-1234 (10.00–12.00)</div>
+                <div class="b-foot">
+                  <span class="b-code">RG-01J8R5</span>
+                  <span class="badge-paid-tiny">● DP Lunas</span>
+                </div>
+              </div>
+            </td>
+            <td class="time-slot-cell">
+              <div class="slot-empty-label">13.00 - 17.00 (Kosong)</div>
+            </td>
+            <td class="time-slot-cell">
+              <div class="booking-block pending" onclick="openCancelModal('RG-20260923-01J8R6', 'Noise Attack Project', '0818-5544-3322', 'Studio B', '19.00 – 21.00 WIB', 'Rp 120.000', 'pending')">
+                <div class="b-customer">Noise Attack Project</div>
+                <div class="b-phone">0818-5544-3322 (19.00–21.00)</div>
+                <div class="b-foot">
+                  <span class="b-code">RG-01J8R6</span>
+                  <span class="badge-pending-tiny">▲ Hold (12m)</span>
+                </div>
+              </div>
+            </td>
+            <td class="time-slot-cell">
+              <div class="slot-empty-label">21.00 - 23.00 (Kosong)</div>
+            </td>
+          </tr>
+
+          <!-- ROW 3: STUDIO C -->
+          <tr>
+            <td class="col-room room-header-cell">
+              <div class="room-cell-title">Studio C</div>
+              <div class="room-cell-rate">4×3m · Rp 90k/jam</div>
+            </td>
+            <td class="time-slot-cell">
+              <div class="slot-empty-label">09.00 - 12.00 (Kosong)</div>
+            </td>
+            <td class="time-slot-cell">
+              <div class="slot-empty-label">13.00 - 17.00 (Kosong)</div>
+            </td>
+            <td class="time-slot-cell">
+              <div class="booking-block" onclick="openCancelModal('RG-20260923-01J8R7', 'Duo Akustik Kemang', '0812-3322-1100', 'Studio C', '18.00 – 20.00 WIB', 'Rp 90.000', 'paid')">
+                <div class="b-customer">Duo Akustik Kemang</div>
+                <div class="b-phone">0812-3322-1100 (18.00–20.00)</div>
+                <div class="b-foot">
+                  <span class="b-code">RG-01J8R7</span>
+                  <span class="badge-paid-tiny">● DP Lunas</span>
+                </div>
+              </div>
+            </td>
+            <td class="time-slot-cell">
+              <div class="slot-empty-label">20.00 - 23.00 (Kosong)</div>
+            </td>
+          </tr>
+
+          <!-- ROW 4: STUDIO D -->
+          <tr>
+            <td class="col-room room-header-cell">
+              <div class="room-cell-title">Studio D</div>
+              <div class="room-cell-rate">7×6m · Rp 250k/jam</div>
+            </td>
+            <td class="time-slot-cell">
+              <div class="slot-empty-label">09.00 - 12.00 (Kosong)</div>
+            </td>
+            <td class="time-slot-cell">
+              <div class="booking-block" onclick="openCancelModal('RG-20260923-01J8R8', 'Barasuara Tribute Session', '0877-8899-0011', 'Studio D', '14.00 – 18.00 WIB', 'Rp 500.000', 'paid')">
+                <div class="b-customer">Barasuara Tribute Session</div>
+                <div class="b-phone">0877-8899-0011 (14.00–18.00)</div>
+                <div class="b-foot">
+                  <span class="b-code">RG-01J8R8</span>
+                  <span class="badge-paid-tiny">● DP Lunas (4 Jam)</span>
+                </div>
+              </div>
+            </td>
+            <td class="time-slot-cell">
+              <div class="slot-empty-label">18.00 - 20.00 (Kosong)</div>
+            </td>
+            <td class="time-slot-cell">
+              <div class="slot-empty-label">20.00 - 23.00 (Kosong)</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- PAGINATION (AC-11: meta.per_page <= 50) -->
+      <div class="pagination-bar">
+        <span>Menampilkan 5 reservasi hari ini · Batas per halaman: 50 item (AC-11)</span>
+        <div style="display: flex; gap: var(--sp-2);">
+          <button type="button" class="date-nav-btn" disabled>Sebelumnya</button>
+          <span style="display: inline-flex; align-items: center; padding: 0 var(--sp-2);">Hal 1 dari 1</span>
+          <button type="button" class="date-nav-btn" disabled>Selanjutnya</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATE 2: LOADING SKELETON -->
+    <div id="view-loading" class="timeline-view-container" style="display: none;">
+      <div style="background-color: var(--surface); border: 1px solid var(--border); border-radius: var(--r-lg); padding: var(--sp-5);">
+        <div class="skeleton-bar" style="width: 30%; height: 28px; margin-bottom: var(--sp-4);"></div>
+        <div class="skeleton-bar" style="width: 100%; height: 60px;"></div>
+        <div class="skeleton-bar" style="width: 100%; height: 60px;"></div>
+        <div class="skeleton-bar" style="width: 100%; height: 60px;"></div>
+        <div class="skeleton-bar" style="width: 100%; height: 60px;"></div>
+      </div>
+    </div>
+
+    <!-- STATE 3: EMPTY STATE (P2.4 teaching microcopy) -->
+    <div id="view-empty" style="display: none; padding: var(--sp-6) var(--sp-4);">
+      <div class="empty-board-banner">
+        <div style="font-family: var(--font-mono); font-size: var(--text-base); color: var(--muted); margin-bottom: var(--sp-2);">[ 0 RESERVASI HARI INI ]</div>
+        <h2 style="font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 700; margin-bottom: var(--sp-2);">Belum ada booking hari ini</h2>
+        <p style="font-size: var(--text-sm); color: var(--muted); line-height: 1.5; margin-bottom: var(--sp-4);">
+          Jadwal muncul di sini begitu ada band yang memesan dan menahan slot ruangan dari website publik.
+        </p>
+        <button type="button" class="date-nav-btn" onclick="switchState('happy')">Refresh Jadwal</button>
+      </div>
+    </div>
+
+    <!-- STATE 4: AUTH ERROR 401/403 (AC-7: no booking data exposed) -->
+    <div id="view-error" style="display: none; padding: var(--sp-6) var(--sp-4);">
+      <div class="error-auth-banner">
+        <div style="font-family: var(--font-mono); font-size: var(--text-base); color: var(--danger); font-weight: 700; margin-bottom: var(--sp-2);">[ 401 UNAUTHENTICATED ]</div>
+        <h2 style="font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 700; margin-bottom: var(--sp-2);">Akses Terbatas: Pemilik Studio</h2>
+        <p style="font-size: var(--text-sm); color: var(--muted); line-height: 1.5;">
+          Data jadwal dan detail kontak pelanggan dilindungi (AC-7). Masukkan kata sandi admin untuk membuka sesi manajemen.
+        </p>
+        <form class="login-box" onsubmit="event.preventDefault(); switchState('happy');">
+          <input type="password" class="modal-input" placeholder="Kata sandi admin studio..." value="••••••••••••" required>
+          <button type="submit" class="btn-confirm-danger" style="background-color: var(--accent); color: var(--accent-fg);">Masuk ke Panel Owner</button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- CANCEL MODAL (AC-9: Owner cancels paid booking with reason + refund) -->
+  <div id="cancel-modal" class="modal-backdrop">
+    <div class="modal-dialog">
+      <h3 class="modal-title">Batalkan Reservasi Pelanggan</h3>
+      <p class="modal-desc" id="modal-desc-text">
+        Pembatalan reservasi yang sudah lunas DP akan otomatis mencatat pengembalian dana (refund) di sistem.
+      </p>
+
+      <div class="form-group">
+        <label for="cancel-code-input" style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--muted);">KODE BOOKING</label>
+        <input type="text" id="cancel-code-input" class="modal-input" readonly>
+      </div>
+
+      <div class="form-group">
+        <label for="cancel-reason" style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--fg); font-weight: 600;">ALASAN PEMBATALAN (WAJIB)</label>
+        <input type="text" id="cancel-reason" class="modal-input" value="Kerusakan mendadak pada amplifier gitar utama" required>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-cancel-action" onclick="closeCancelModal()">Tutup</button>
+        <button type="button" class="btn-confirm-danger" onclick="submitCancelBooking()">Batalkan & Catat Refund</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let activeBookingToCancel = null;
+
+    function openCancelModal(code, customer, phone, room, time, dp, status) {
+      activeBookingToCancel = code;
+      document.getElementById('cancel-code-input').value = code;
+      document.getElementById('modal-desc-text').textContent = 
+        `Konfirmasi pembatalan untuk ${customer} (${room}, ${time}). DP: ${dp}. Sesuai AC-9, tindakan ini memindahkan status ke cancelled dan mencatat refund.`;
+      document.getElementById('cancel-modal').style.display = 'flex';
+    }
+
+    function closeCancelModal() {
+      document.getElementById('cancel-modal').style.display = 'none';
+      activeBookingToCancel = null;
+    }
+
+    function submitCancelBooking() {
+      closeCancelModal();
+      switchState('cancelled');
+    }
+
+    function switchState(stateName) {
+      document.querySelectorAll('.state-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.querySelector(`[data-od-id="toggle-${stateName}"]`);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      const vHappy = document.getElementById('view-happy');
+      const vLoading = document.getElementById('view-loading');
+      const vEmpty = document.getElementById('view-empty');
+      const vError = document.getElementById('view-error');
+      const toolbar = document.getElementById('toolbar-panel');
+
+      vHappy.style.display = 'none';
+      vLoading.style.display = 'none';
+      vEmpty.style.display = 'none';
+      vError.style.display = 'none';
+      toolbar.style.display = 'flex';
+
+      const bagasCard = document.getElementById('booking-bagas-card');
+      const bagasBadge = document.getElementById('bagas-badge');
+      const metricRev = document.getElementById('metric-rev');
+
+      if (stateName === 'happy') {
+        vHappy.style.display = 'block';
+        bagasCard.className = 'booking-block';
+        bagasBadge.className = 'badge-paid-tiny';
+        bagasBadge.textContent = '● DP Lunas';
+        metricRev.textContent = 'Rp 1.050.000';
+      } else if (stateName === 'loading') {
+        vLoading.style.display = 'block';
+      } else if (stateName === 'empty') {
+        vEmpty.style.display = 'block';
+      } else if (stateName === 'error') {
+        toolbar.style.display = 'none';
+        vError.style.display = 'block';
+      } else if (stateName === 'cancelled') {
+        // AC-9: Booking cancelled with refund recorded
+        vHappy.style.display = 'block';
+        bagasCard.className = 'booking-block cancelled';
+        bagasBadge.className = 'badge-cancelled-tiny';
+        bagasBadge.textContent = '✕ Dibatalkan (Refund)';
+        metricRev.textContent = 'Rp 900.000 (Refund Rp 150.000)';
+      }
+    }
+  </script>
+</body>
+</html>
