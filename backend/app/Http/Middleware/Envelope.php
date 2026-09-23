@@ -25,16 +25,19 @@ class Envelope
         $status = $response->getStatusCode();
         $isError = $status >= 400;
 
-        $envelope = $isError
-            ? ['success' => false, 'error' => [
+        if ($isError) {
+            $fields = $data['errors'] ?? [];
+            $envelope = ['success' => false, 'error' => [
                 'code' => $data['code'] ?? $this->defaultCode($status),
                 'message' => $data['message'] ?? 'Terjadi kesalahan.',
-                'fields' => $data['errors'] ?? [],
-              ]]
-            : ['success' => true, 'data' => $data['data'] ?? $data, 'meta' => $data['meta'] ?? null];
-
-        if (! $isError && ! array_key_exists('meta', $envelope)) {
-            $envelope['meta'] = null;
+            ]];
+            // Contract: fields is Record<string,string[]> and OPTIONAL.
+            // Never emit an empty JSON array ([] ≠ {}), which breaks strict clients.
+            if (is_array($fields) && $fields !== []) {
+                $envelope['error']['fields'] = $fields;
+            }
+        } else {
+            $envelope = ['success' => true, 'data' => $data['data'] ?? $data, 'meta' => $data['meta'] ?? null];
         }
 
         $response->setContent(json_encode($envelope));

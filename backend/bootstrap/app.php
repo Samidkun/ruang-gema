@@ -19,11 +19,27 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // API-only backend: there is no web `login` route, so the framework's
+        // default guest redirect (`route('login')`) throws RouteNotFoundException
+        // inside the auth middleware → 500 for any unauthenticated request that
+        // does not send `Accept: application/json` (e.g. a browser navigation).
+        // Return null so the exception carries no redirect target and the
+        // exception handler can render a clean 401 JSON (AC-7).
+        $middleware->redirectGuestsTo(fn () => null);
+
         $middleware->api(prepend: [
             \App\Http\Middleware\Envelope::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
+        // API is JSON-only: never redirect to a named `login` route (there is
+        // none — this is an API backend). Without this, an unauthenticated
+        // request that lacks `Accept: application/json` triggers a redirect to
+        // route('login') → RouteNotFoundException → 500 instead of 401 (AC-7).
+        $exceptions->shouldRenderJsonWhen(
+            fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
+        );
+
         // Uniform error envelope for API routes (P2.5 §2).
         $exceptions->render(function (Throwable $e, Request $request) {
             if (! $request->is('api/*')) {
@@ -43,9 +59,16 @@ return Application::configure(basePath: dirname(__DIR__))
                 default => [500, 'ERROR', 'Terjadi kesalahan pada server.', []],
             };
 
+            $error = ['code' => $code, 'message' => $message];
+            // Contract: `fields` is an optional Record<string,string[]>. Omit it
+            // when empty — an empty JSON array breaks strict clients (AC-4).
+            if (is_array($fields) && $fields !== []) {
+                $error['fields'] = $fields;
+            }
+
             return response()->json([
                 'success' => false,
-                'error' => ['code' => $code, 'message' => $message, 'fields' => $fields],
+                'error' => $error,
             ], $status);
         });
     })->create();

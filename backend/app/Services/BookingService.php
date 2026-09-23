@@ -51,7 +51,16 @@ class BookingService
         } catch (QueryException $e) {
             // A1: the partial unique index is the source of truth.
             if ($this->isUniqueViolation($e)) {
-                throw new ApiException('SLOT_TAKEN', "Slot {$start->format('H.i')} baru saja diambil. Pilih jam lain.", 409);
+                // AC-4: the message names the hour the user picked, in the
+                // display timezone (WIB) — not the UTC internal value.
+                $tz = config('app.display_timezone', 'Asia/Jakarta');
+                $wib = $start->setTimezone($tz);
+                $wibEnd = $end->setTimezone($tz);
+                throw new ApiException(
+                    'SLOT_TAKEN',
+                    "Slot {$wib->format('H.i')}–{$wibEnd->format('H.i')} baru saja diambil. Pilih jam lain.",
+                    409,
+                );
             }
             throw $e;
         }

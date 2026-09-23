@@ -65,6 +65,28 @@ class ContractTest extends TestCase
         $this->assertSame('SLOT_TAKEN', $r->json('error.code'));
     }
 
+    /**
+     * AC-4 (UI contract): the conflict message must name the hour in the DISPLAY
+     * timezone (WIB), and `fields` must be a JSON object or absent — never an
+     * empty array. A strict client (zod Record) rejects `"fields":[]`, so the
+     * inline conflict alert would never render.
+     */
+    public function test_ac4_conflict_message_uses_wib_and_fields_is_never_empty_array(): void
+    {
+        // 19.00 WIB == 12.00 UTC.
+        $p = array_merge($this->payload(), ['start_at' => '2026-10-01T19:00:00+07:00']);
+        $this->postJson('/api/bookings', $p)->assertCreated();
+
+        $r = $this->postJson('/api/bookings', $p);
+        $r->assertStatus(409);
+
+        $this->assertStringContainsString('19.00', $r->json('error.message'), 'message must name the WIB hour');
+        $this->assertStringNotContainsString('12.00', $r->json('error.message'), 'message leaked the UTC hour');
+
+        $raw = $r->json('error');
+        $this->assertArrayNotHasKey('fields', $raw, 'empty `fields` must be omitted, not sent as []');
+    }
+
     // ---- AC-12: server-derived price -------------------------------------
 
     public function test_ac12_forged_total_amount_is_ignored(): void
@@ -141,6 +163,21 @@ class ContractTest extends TestCase
         $this->assertContains($r->status(), [401, 403]);
         $r->assertJsonStructure(['success','error' => ['code','message']]);
         $this->assertNull($r->json('data'), 'admin route leaked data to an unauthenticated caller');
+    }
+
+    /**
+     * AC-7 regression: a browser navigation does NOT send `Accept: application/json`.
+     * Laravel's default auth middleware then tries to redirect to route('login'),
+     * which does not exist in an API-only backend → RouteNotFoundException → 500.
+     * The guard must return 401/403 JSON regardless of the Accept header.
+     */
+    public function test_ac7_admin_returns_json_not_500_without_accept_header(): void
+    {
+        $r = $this->get('/api/admin/bookings'); // no Accept: application/json
+
+        $this->assertContains($r->status(), [401, 403], "got {$r->status()} — expected 401/403");
+        $this->assertSame(false, $r->json('success'));
+        $this->assertNull($r->json('data'));
     }
 
     // ---- AC-11: pagination ------------------------------------------------
