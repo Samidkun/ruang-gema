@@ -1,0 +1,74 @@
+/* Design tokens — Ruang Gema Studio. Source of truth: DESIGN.md §4.
+   Verbatim. Do not invent colors/fonts/radii outside this file. */
+:root {
+  /* — Warna: peran semantik, bukan dekoratif — */
+  --bg:        oklch(0.19 0.012 265);  /* panggung gelap, bukan hitam pekat */
+  --surface:   oklch(0.24 0.014 265);  /* panel */
+  --surface-2: oklch(0.29 0.016 265);  /* panel terangkat (hover/terpilih) */
+  --fg:        oklch(0.96 0.006 265);  /* teks utama */
+  --muted:     oklch(0.70 0.012 265);  /* teks sekunder */
+  --border:    oklch(0.34 0.014 265);
+  --border-strong: oklch(0.46 0.016 265);
+
+  --accent:    oklch(0.78 0.155 78);   /* amber "VU meter" — CTA & penanda aktif */
+  --accent-fg: oklch(0.20 0.030 78);   /* teks di atas accent */
+  --ok:        oklch(0.72 0.140 150);  /* slot tersedia */
+  --warn:      oklch(0.80 0.140 85);   /* menunggu bayar */
+  --danger:    oklch(0.66 0.190 25);   /* gagal / bentrok */
+
+  /* — Tint: permukaan berwarna untuk alert/badge — */
+  --ok-tint:      oklch(0.24 0.05 150);
+  --warn-tint:    oklch(0.24 0.05 85);
+  --danger-tint:  oklch(0.24 0.05 25);
+  --accent-tint:  oklch(0.26 0.06 78);
+  --ok-border:     oklch(0.35 0.08 150);
+  --warn-border:   oklch(0.38 0.09 85);
+  --danger-border: oklch(0.36 0.10 25);
+
+  /* — Tipografi — */
+  --font-display: "Bricolage Grotesque", "Archivo", system-ui, sans-serif;
+  --font-body:    "Public Sans", "IBM Plex Sans", system-ui, sans-serif;
+  --font-mono:    "JetBrains Mono", "IBM Plex Mono", ui-monospace, monospace;
+
+  --text-xs:   0.75rem;
+  --text-sm:   0.8125rem;
+  --text-base: 0.9375rem;
+  --text-lg:   1.125rem;
+  --text-xl:   1.375rem;
+  --text-2xl:  1.75rem;
+  --text-3xl:  clamp(2rem, 4vw, 2.75rem);
+
+  /* — Spasi — */
+  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px;
+  --sp-5: 24px; --sp-6: 32px; --sp-7: 48px; --sp-8: 64px;
+
+  /* — Radius: BERVARIASI — */
+  --r-sm: 4px; --r-md: 8px; --r-lg: 14px; --r-pill: 999px;
+
+  /* — Bayangan — */
+  --shadow-1: 0 1px 2px oklch(0.12 0.02 265 / 0.5);
+  --shadow-2: 0 8px 24px oklch(0.12 0.02 265 / 0.45);
+
+  /* — Motion — */
+  --dur-fast: 120ms; --dur-base: 180ms; --ease: cubic-bezier(0.2, 0, 0, 1);
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root { margin: 0; padding: 0; }
+
+body {
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Signature bet: numbers are always tabular (DESIGN.md §5.6) */
+.num, .price, time { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}

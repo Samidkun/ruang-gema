@@ -1,0 +1,156 @@
+/* Core component classes — transplanted verbatim from preview/mockup/*.html.
+   These ARE the design system's components; screens compose them.
+   Tokens come from tokens.css (DESIGN.md). No invented values. */
+
+/* ---- Button (radius 8px per DESIGN.md §5.3) ---- */
+.btn {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--text-base);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: var(--r-md);
+  padding: 0 var(--sp-5);
+  min-height: 48px;
+  transition: filter var(--dur-fast) var(--ease), background-color var(--dur-fast) var(--ease);
+}
+.btn-primary {
+  color: var(--accent-fg);
+  background-color: var(--accent);
+}
+.btn-primary:hover { filter: brightness(1.08); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; filter: none; }
+
+.btn-ghost {
+  font-size: var(--text-sm);
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--border);
+  padding: 0 var(--sp-4);
+}
+.btn-ghost:hover { background-color: var(--surface); color: var(--fg); }
+
+.btn-danger {
+  color: var(--danger);
+  background: transparent;
+  border: 1px solid var(--danger-border);
+}
+.btn-danger:hover { background-color: var(--danger-tint); }
+
+/* ---- Badge (radius pill) ---- */
+.badge-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: 2px var(--sp-2);
+  border-radius: var(--r-pill);
+  font-size: var(--text-xs);
+  font-family: var(--font-mono);
+  border: 1px solid var(--border);
+  color: var(--muted);
+}
+.badge-ok { background-color: var(--ok-tint); color: var(--ok); border-color: var(--ok-border); }
+.badge-warn { background-color: var(--warn-tint); color: var(--warn); border-color: var(--warn-border); }
+.badge-danger { background-color: var(--danger-tint); color: var(--danger); border-color: var(--danger-border); }
+
+/* ---- Room card (radius 14px) ---- */
+.room-item-card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: var(--sp-4);
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  transition: background-color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  min-height: 44px;
+}
+.room-item-card:hover { background-color: var(--surface-2); border-color: var(--border-strong); }
+.room-item-card.selected { border-color: var(--accent); }
+
+.item-top { display: flex; align-items: baseline; justify-content: space-between; }
+.item-name { font-family: var(--font-display); font-size: var(--text-lg); font-weight: 700; color: var(--fg); }
+.item-size { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--muted); }
+.item-rate {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--text-base);
+  font-weight: 700;
+  color: var(--fg);
+}
+.item-status-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--sp-2);
+  border-top: 1px solid var(--border);
+  font-size: var(--text-xs);
+  font-family: var(--font-mono);
+}
+
+/* ---- Alert / state surfaces ---- */
+.alert {
+  border-radius: var(--r-md);
+  padding: var(--sp-3) var(--sp-4);
+  font-size: var(--text-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+.alert-conflict { background-color: var(--danger-tint); border: 1px solid var(--danger-border); color: var(--fg); }
+.alert-countdown { background-color: var(--warn-tint); border: 1px solid var(--warn-border); color: var(--fg); }
+
+.state-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: var(--sp-7) var(--sp-5);
+  text-align: center;
+}
+.state-title { font-family: var(--font-display); font-size: var(--text-xl); font-weight: 700; margin-bottom: var(--sp-2); }
+.state-desc { font-size: var(--text-sm); color: var(--muted); max-width: 44ch; margin: 0 auto var(--sp-4); }
+
+/* ---- Form field ---- */
+.field-group { display: flex; flex-direction: column; gap: var(--sp-1); margin-bottom: var(--sp-4); }
+.field-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--fg);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.field-input {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--fg);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: var(--sp-3) var(--sp-3);
+  min-height: 44px;
+}
+.field-input:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: var(--accent); }
+.field-error-msg { font-size: var(--text-xs); color: var(--danger); }
+
+/* ---- Skeleton ---- */
+.skeleton-box {
+  background: linear-gradient(90deg, var(--surface) 25%, var(--surface-2) 50%, var(--surface) 75%);
+  background-size: 200% 100%;
+  animation: skeleton-pulse 1.6s infinite ease-in-out;
+  border-radius: var(--r-sm);
+}
+@keyframes skeleton-pulse {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ---- Container ---- */
+.container { max-width: 960px; margin: 0 auto; padding: 0 var(--sp-5); }

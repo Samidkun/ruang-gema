@@ -1,0 +1,316 @@
+/* Screen: booking-form — transplanted 1:1 from preview/mockup/booking-form.html.
+   Scoped under .screen-booking-form (mechanical, no value changed). :root lives in tokens.css. */
+.screen-booking-form .container {width: 100%;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 var(--sp-4);}
+.screen-booking-form .state-bar {background-color: var(--surface);
+      border-bottom: 1px solid var(--border-strong);
+      padding: var(--sp-2) var(--sp-4);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--sp-2);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);}
+.screen-booking-form .state-label {color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: var(--sp-2);}
+.screen-booking-form .state-toggle-group {display: flex;
+      align-items: center;
+      gap: var(--sp-1);
+      background-color: var(--bg);
+      padding: 2px;
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);}
+.screen-booking-form .state-btn {font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      padding: var(--sp-1) var(--sp-3);
+      border-radius: var(--r-sm);
+      cursor: pointer;
+      min-height: 32px;
+      display: inline-flex;
+      align-items: center;
+      transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);}
+.screen-booking-form .state-btn:hover {color: var(--fg);
+      background-color: var(--surface);}
+.screen-booking-form .state-btn.active {background-color: var(--surface-2);
+      color: var(--fg);
+      font-weight: 600;}
+.screen-booking-form header {border-bottom: 1px solid var(--border);
+      background-color: var(--bg);}
+.screen-booking-form .nav-inner {display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 60px;}
+.screen-booking-form .brand {display: flex;
+      align-items: center;
+      gap: var(--sp-2);
+      text-decoration: none;
+      color: var(--fg);}
+.screen-booking-form .brand-mark {width: 28px;
+      height: 28px;
+      border-radius: var(--r-md);
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      font-weight: 700;
+      color: var(--fg);}
+.screen-booking-form .brand-title {font-family: var(--font-display);
+      font-size: var(--text-base);
+      font-weight: 700;}
+.screen-booking-form .nav-link {font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--muted);
+      text-decoration: none;
+      padding: var(--sp-2) var(--sp-3);
+      border-radius: var(--r-md);
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;}
+.screen-booking-form .nav-link:hover {color: var(--fg);
+      background-color: var(--surface);}
+.screen-booking-form .flow-head {padding: var(--sp-5) 0 var(--sp-3);}
+.screen-booking-form .step-indicator {display: inline-flex;
+      align-items: center;
+      gap: var(--sp-2);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--muted);
+      margin-bottom: var(--sp-2);}
+.screen-booking-form .flow-title {font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: var(--sp-1);}
+.screen-booking-form .flow-sub {color: var(--muted);
+      font-size: var(--text-sm);}
+.screen-booking-form .alert-box {border-radius: var(--r-lg);
+      padding: var(--sp-4);
+      margin-bottom: var(--sp-4);
+      display: flex;
+      align-items: flex-start;
+      gap: var(--sp-3);
+      font-size: var(--text-sm);}
+.screen-booking-form .alert-conflict {background-color: var(--danger-tint);
+      border: 1px solid var(--danger);
+      color: var(--fg);}
+.screen-booking-form .alert-conflict .alert-icon {color: var(--danger);
+      font-family: var(--font-mono);
+      font-weight: 700;}
+.screen-booking-form .alert-countdown {background-color: var(--warn-tint);
+      border: 1px solid var(--warn);
+      color: var(--fg);}
+.screen-booking-form .alert-countdown .countdown-timer {font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      font-size: var(--text-lg);
+      font-weight: 700;
+      color: var(--warn);}
+.screen-booking-form .alert-error {background-color: var(--danger-tint);
+      border: 1px solid var(--danger);
+      color: var(--fg);}
+.screen-booking-form .booking-layout {display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--sp-5);
+      margin-bottom: var(--sp-7);}
+@media (min-width: 900px) {
+  .screen-booking-form .booking-layout {grid-template-columns: 1.35fr 1fr;
+        align-items: start;}
+}
+.screen-booking-form .picker-panel {background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: var(--sp-5);}
+.screen-booking-form .panel-header-row {display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--sp-3);
+      padding-bottom: var(--sp-4);
+      border-bottom: 1px solid var(--border);
+      margin-bottom: var(--sp-4);}
+.screen-booking-form .date-filter-group {display: flex;
+      align-items: center;
+      gap: var(--sp-2);}
+.screen-booking-form .input-date {font-family: var(--font-mono);
+      font-size: var(--text-sm);
+      background-color: var(--bg);
+      color: var(--fg);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: var(--sp-2) var(--sp-3);
+      min-height: 44px;}
+.screen-booking-form .room-pills {display: flex;
+      flex-wrap: wrap;
+      gap: var(--sp-1);}
+.screen-booking-form .room-tab-btn {font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      background-color: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--r-pill);
+      padding: var(--sp-1) var(--sp-3);
+      color: var(--muted);
+      cursor: pointer;
+      min-height: 36px;
+      display: inline-flex;
+      align-items: center;}
+.screen-booking-form .room-tab-btn.active {background-color: var(--fg);
+      color: var(--bg);
+      border-color: var(--fg);
+      font-weight: 600;}
+.screen-booking-form .slots-grid-title {font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--sp-3);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;}
+.screen-booking-form .slots-grid {display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--sp-2);
+      margin-bottom: var(--sp-4);}
+@media (min-width: 520px) {
+  .screen-booking-form .slots-grid {grid-template-columns: repeat(3, 1fr);}
+}
+@media (min-width: 720px) {
+  .screen-booking-form .slots-grid {grid-template-columns: repeat(4, 1fr);}
+}
+.screen-booking-form .slot-cell {background-color: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      padding: var(--sp-2) var(--sp-3);
+      text-align: left;
+      cursor: pointer;
+      min-height: 56px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 2px;
+      transition: background-color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);}
+.screen-booking-form .slot-cell:hover:not([aria-disabled="true"]) {background-color: var(--surface-2);
+      border-color: var(--border-strong);}
+.screen-booking-form .slot-cell.selected {background-color: var(--surface-2);
+      border-color: var(--accent);}
+.screen-booking-form .slot-cell[aria-disabled="true"] {opacity: 0.45;
+      cursor: not-allowed;
+      background-color: var(--surface);
+      border-color: var(--border);}
+.screen-booking-form .slot-time {font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      font-size: var(--text-sm);
+      font-weight: 600;
+      color: var(--fg);}
+.screen-booking-form .slot-state-label {font-family: var(--font-mono);
+      font-size: 0.7rem;
+      display: flex;
+      align-items: center;
+      gap: 4px;}
+.screen-booking-form .slot-state-label.free {color: var(--ok);}
+.screen-booking-form .slot-state-label.taken {color: var(--muted);}
+.screen-booking-form .slot-legend {display: flex;
+      align-items: center;
+      gap: var(--sp-4);
+      padding-top: var(--sp-3);
+      border-top: 1px solid var(--border);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--muted);}
+.screen-booking-form .form-panel {background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: var(--sp-5);
+      box-shadow: var(--shadow-1);}
+.screen-booking-form .panel-heading {font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: 700;
+      margin-bottom: var(--sp-1);}
+.screen-booking-form .panel-sub {font-size: var(--text-xs);
+      color: var(--muted);
+      margin-bottom: var(--sp-4);}
+.screen-booking-form .field-group {margin-bottom: var(--sp-4);
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-1);}
+.screen-booking-form .field-label {font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--fg);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;}
+.screen-booking-form .field-input {font-family: var(--font-body);
+      font-size: var(--text-sm);
+      background-color: var(--bg);
+      color: var(--fg);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: var(--sp-2) var(--sp-3);
+      min-height: 44px;
+      outline: none;
+      transition: border-color var(--dur-fast) var(--ease);}
+.screen-booking-form .field-input:focus {border-color: var(--border-strong);}
+.screen-booking-form .field-input.has-error {border-color: var(--danger);}
+.screen-booking-form .field-error-msg {font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--danger);}
+.screen-booking-form .summary-card {background-color: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      padding: var(--sp-3);
+      margin-bottom: var(--sp-4);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);}
+.screen-booking-form .summary-row {display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: var(--sp-1);
+      color: var(--muted);}
+.screen-booking-form .summary-row.total {margin-top: var(--sp-2);
+      padding-top: var(--sp-2);
+      border-top: 1px solid var(--border);
+      color: var(--fg);
+      font-size: var(--text-sm);
+      font-weight: 700;}
+.screen-booking-form .summary-row.dp {color: var(--fg);
+      font-weight: 700;
+      font-size: var(--text-base);
+      margin-top: var(--sp-1);}
+.screen-booking-form .btn-submit {width: 100%;
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: var(--text-base);
+      color: var(--accent-fg);
+      background-color: var(--accent); 
+      border: 1px solid transparent;
+      border-radius: var(--r-md);
+      padding: 0 var(--sp-4);
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--sp-2);
+      cursor: pointer;
+      text-decoration: none;
+      transition: filter var(--dur-fast) var(--ease);}
+.screen-booking-form .btn-submit:hover {filter: brightness(1.08);}
+.screen-booking-form .btn-cancel-hold {font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--danger);
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      padding: var(--sp-2);
+      min-height: 44px;
+      width: 100%;
+      margin-top: var(--sp-2);
+      cursor: pointer;}
+.screen-booking-form .btn-cancel-hold:hover {background-color: var(--surface-2);}

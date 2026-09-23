@@ -1,0 +1,311 @@
+/* Screen: admin-dashboard — transplanted 1:1 from preview/mockup/admin-dashboard.html.
+   Scoped under .screen-admin-dashboard (mechanical, no value changed). :root lives in tokens.css. */
+.screen-admin-dashboard .state-bar {background-color: var(--surface);
+      border-bottom: 1px solid var(--border-strong);
+      padding: var(--sp-2) var(--sp-4);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--sp-2);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);}
+.screen-admin-dashboard .state-label {color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: var(--sp-2);}
+.screen-admin-dashboard .state-toggle-group {display: flex;
+      align-items: center;
+      gap: var(--sp-1);
+      background-color: var(--bg);
+      padding: 2px;
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);}
+.screen-admin-dashboard .state-btn {font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      padding: var(--sp-1) var(--sp-3);
+      border-radius: var(--r-sm);
+      cursor: pointer;
+      min-height: 32px;
+      display: inline-flex;
+      align-items: center;
+      transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);}
+.screen-admin-dashboard .state-btn:hover {color: var(--fg);
+      background-color: var(--surface);}
+.screen-admin-dashboard .state-btn.active {background-color: var(--surface-2);
+      color: var(--fg);
+      font-weight: 600;}
+.screen-admin-dashboard .dash-header {background-color: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 var(--sp-4);}
+.screen-admin-dashboard .dash-nav {display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;}
+.screen-admin-dashboard .brand-group {display: flex;
+      align-items: center;
+      gap: var(--sp-3);}
+.screen-admin-dashboard .brand-mark {width: 28px;
+      height: 28px;
+      border-radius: var(--r-md);
+      background-color: var(--bg);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      font-weight: 700;
+      color: var(--fg);}
+.screen-admin-dashboard .brand-title {font-family: var(--font-display);
+      font-size: var(--text-base);
+      font-weight: 700;}
+.screen-admin-dashboard .owner-tag {font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      background-color: var(--surface-2);
+      padding: 2px var(--sp-2);
+      border-radius: var(--r-pill);
+      border: 1px solid var(--border);
+      color: var(--muted);}
+.screen-admin-dashboard .nav-actions {display: flex;
+      align-items: center;
+      gap: var(--sp-2);}
+.screen-admin-dashboard .btn-public-site {font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--muted);
+      text-decoration: none;
+      padding: var(--sp-1) var(--sp-3);
+      border-radius: var(--r-md);
+      border: 1px solid var(--border);
+      min-height: 38px;
+      display: inline-flex;
+      align-items: center;}
+.screen-admin-dashboard .btn-public-site:hover {background-color: var(--surface-2);
+      color: var(--fg);}
+.screen-admin-dashboard .dash-toolbar {padding: var(--sp-3) var(--sp-4);
+      background-color: var(--bg);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--sp-3);}
+.screen-admin-dashboard .date-control {display: flex;
+      align-items: center;
+      gap: var(--sp-2);}
+.screen-admin-dashboard .date-nav-btn {font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      background-color: var(--surface);
+      color: var(--fg);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: var(--sp-2) var(--sp-3);
+      min-height: 38px;
+      cursor: pointer;}
+.screen-admin-dashboard .date-nav-btn:hover {background-color: var(--surface-2);}
+.screen-admin-dashboard .current-date-badge {font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      font-size: var(--text-sm);
+      font-weight: 700;
+      color: var(--fg);
+      padding: var(--sp-1) var(--sp-3);
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      min-height: 38px;
+      display: inline-flex;
+      align-items: center;}
+.screen-admin-dashboard .metrics-strip {display: flex;
+      align-items: center;
+      gap: var(--sp-4);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);}
+.screen-admin-dashboard .metric-item {display: flex;
+      align-items: baseline;
+      gap: var(--sp-2);}
+.screen-admin-dashboard .metric-val {font-size: var(--text-base);
+      font-weight: 700;
+      color: var(--fg);
+      font-variant-numeric: tabular-nums;}
+.screen-admin-dashboard .metric-val.income {color: var(--ok);}
+.screen-admin-dashboard .timeline-view-container {padding: var(--sp-4);
+      overflow-x: auto;}
+.screen-admin-dashboard .timeline-table-board {width: 100%;
+      min-width: 960px;
+      border-collapse: collapse;
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      box-shadow: var(--shadow-1);}
+.screen-admin-dashboard .timeline-table-board th, .screen-admin-dashboard .timeline-table-board td {border: 1px solid var(--border);
+      padding: var(--sp-2);
+      text-align: left;
+      vertical-align: top;}
+.screen-admin-dashboard .timeline-table-board th {background-color: var(--surface-2);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      position: sticky;
+      top: 0;}
+.screen-admin-dashboard .col-room {width: 160px;
+      background-color: var(--surface-2) !important;}
+.screen-admin-dashboard .room-header-cell {padding: var(--sp-3) var(--sp-2);}
+.screen-admin-dashboard .room-cell-title {font-family: var(--font-display);
+      font-size: var(--text-base);
+      font-weight: 700;
+      color: var(--fg);}
+.screen-admin-dashboard .room-cell-rate {font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      font-size: 0.7rem;
+      color: var(--muted);}
+.screen-admin-dashboard .time-slot-cell {height: 84px;
+      position: relative;
+      background-color: var(--bg);
+      transition: background-color var(--dur-fast) var(--ease);
+      padding: 4px;}
+.screen-admin-dashboard .time-slot-cell:hover {background-color: var(--surface);}
+.screen-admin-dashboard .booking-block {background-color: var(--surface);
+      border: 1px solid var(--border-strong);
+      border-left: 3px solid var(--ok);
+      border-radius: var(--r-sm);
+      padding: var(--sp-2);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 2px;
+      cursor: pointer;}
+.screen-admin-dashboard .booking-block.pending {border-left-color: var(--warn);
+      background-color: var(--warn-tint);}
+.screen-admin-dashboard .booking-block.cancelled {border-left-color: var(--danger);
+      background-color: var(--danger-tint);
+      opacity: 0.8;}
+.screen-admin-dashboard .b-customer {font-family: var(--font-display);
+      font-size: var(--text-xs);
+      font-weight: 700;
+      color: var(--fg);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;}
+.screen-admin-dashboard .b-phone {font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      font-size: 0.7rem;
+      color: var(--muted);}
+.screen-admin-dashboard .b-foot {display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      margin-top: 2px;}
+.screen-admin-dashboard .b-code {color: var(--muted);}
+.screen-admin-dashboard .badge-paid-tiny {color: var(--ok);
+      font-weight: 600;}
+.screen-admin-dashboard .badge-pending-tiny {color: var(--warn);
+      font-weight: 600;}
+.screen-admin-dashboard .badge-cancelled-tiny {color: var(--danger);
+      font-weight: 600;}
+.screen-admin-dashboard .slot-empty-label {font-family: var(--font-mono);
+      font-size: 0.7rem;
+      color: var(--muted);
+      padding: var(--sp-1);}
+.screen-admin-dashboard .modal-backdrop {position: fixed;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.75);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      padding: var(--sp-4);}
+.screen-admin-dashboard .modal-dialog {background-color: var(--surface);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--r-lg);
+      padding: var(--sp-5);
+      width: 100%;
+      max-width: 480px;
+      box-shadow: var(--shadow-2);}
+.screen-admin-dashboard .modal-title {font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: 700;
+      margin-bottom: var(--sp-2);}
+.screen-admin-dashboard .modal-desc {font-size: var(--text-sm);
+      color: var(--muted);
+      margin-bottom: var(--sp-4);
+      line-height: 1.45;}
+.screen-admin-dashboard .form-group {margin-bottom: var(--sp-4);
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-1);}
+.screen-admin-dashboard .modal-input {font-family: var(--font-body);
+      font-size: var(--text-sm);
+      background-color: var(--bg);
+      color: var(--fg);
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      padding: var(--sp-2) var(--sp-3);
+      min-height: 44px;}
+.screen-admin-dashboard .modal-actions {display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: var(--sp-3);
+      border-top: 1px solid var(--border);
+      padding-top: var(--sp-4);}
+.screen-admin-dashboard .btn-cancel-action {font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--muted);
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      padding: 0 var(--sp-3);
+      min-height: 44px;
+      cursor: pointer;}
+.screen-admin-dashboard .btn-confirm-danger {font-family: var(--font-body);
+      font-weight: 600;
+      font-size: var(--text-sm);
+      color: var(--fg);
+      background-color: var(--danger);
+      border: none;
+      border-radius: var(--r-md);
+      padding: 0 var(--sp-4);
+      min-height: 44px;
+      cursor: pointer;}
+.screen-admin-dashboard .empty-board-banner {background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: var(--sp-6) var(--sp-5);
+      text-align: center;
+      max-width: 600px;
+      margin: var(--sp-6) auto;}
+.screen-admin-dashboard .error-auth-banner {background-color: var(--surface);
+      border: 1px solid var(--danger);
+      border-radius: var(--r-lg);
+      padding: var(--sp-6) var(--sp-5);
+      text-align: center;
+      max-width: 520px;
+      margin: var(--sp-6) auto;}
+.screen-admin-dashboard .login-box {margin-top: var(--sp-4);
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      gap: var(--sp-3);}
+.screen-admin-dashboard .skeleton-bar {height: 20px;
+      background: linear-gradient(90deg, var(--surface) 25%, var(--surface-2) 50%, var(--surface) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: var(--r-sm);
+      margin-bottom: var(--sp-2);}
+@keyframes shimmer {0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }}
+.screen-admin-dashboard .pagination-bar {display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--sp-3) var(--sp-4);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--muted);
+      border-top: 1px solid var(--border);}

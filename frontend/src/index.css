@@ -1,0 +1,10 @@
+/* Entry stylesheet — imports the token contract and the transplanted CSS.
+   The Vite starter's default theme was removed: its :root used hex colours
+   (#aa3bff etc.) that would override the DESIGN.md token spine (Zero Redesign). */
+@import './styles/tokens.css';
+@import './styles/components.css';
+@import './styles/screens/landing.css';
+@import './styles/screens/service-list.css';
+@import './styles/screens/booking-form.css';
+@import './styles/screens/booking-success.css';
+@import './styles/screens/admin-dashboard.css';

@@ -1,0 +1,307 @@
+/* Screen: landing — transplanted 1:1 from preview/mockup/landing.html.
+   Scoped under .screen-landing (mechanical, no value changed). :root lives in tokens.css. */
+.screen-landing .container {width: 100%;
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 var(--sp-4);}
+.screen-landing header {border-bottom: 1px solid var(--border);
+      background-color: var(--bg);
+      position: sticky;
+      top: 0;
+      z-index: 20;}
+.screen-landing .nav-inner {display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;}
+.screen-landing .brand {display: flex;
+      align-items: center;
+      gap: var(--sp-2);
+      text-decoration: none;
+      color: var(--fg);}
+.screen-landing .brand-mark {width: 32px;
+      height: 32px;
+      border-radius: var(--r-md);
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      font-weight: 600;
+      color: var(--fg);}
+.screen-landing .brand-title {font-family: var(--font-display);
+      font-size: var(--text-lg);
+      font-weight: 700;
+      letter-spacing: -0.02em;}
+.screen-landing .nav-links {display: flex;
+      align-items: center;
+      gap: var(--sp-3);}
+.screen-landing .nav-link {font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--muted);
+      text-decoration: none;
+      padding: var(--sp-2) var(--sp-3);
+      border-radius: var(--r-md);
+      transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;}
+.screen-landing .nav-link:hover {background-color: var(--surface);
+      color: var(--fg);}
+.screen-landing .hero {padding: var(--sp-6) 0 var(--sp-5);
+      border-bottom: 1px solid var(--border);}
+.screen-landing .hero-layout {display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--sp-5);}
+@media (min-width: 860px) {
+  .screen-landing .hero-layout {grid-template-columns: 1.1fr 0.9fr;
+        align-items: start;
+        gap: var(--sp-6);}
+}
+.screen-landing .kicker {display: inline-flex;
+      align-items: center;
+      gap: var(--sp-2);
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--muted);
+      padding: var(--sp-1) var(--sp-3);
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-pill);
+      margin-bottom: var(--sp-3);}
+.screen-landing .kicker-dot {width: 6px;
+      height: 6px;
+      border-radius: var(--r-pill);
+      background-color: var(--ok);}
+.screen-landing .hero-title {font-family: var(--font-display);
+      font-size: var(--text-3xl);
+      line-height: 1.15;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: var(--sp-3);}
+.screen-landing .hero-desc {font-size: var(--text-base);
+      color: var(--muted);
+      margin-bottom: var(--sp-4);
+      max-width: 520px;}
+.screen-landing .studio-meta {display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--sp-3);
+      padding: var(--sp-4);
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      margin-bottom: var(--sp-5);}
+@media (min-width: 540px) {
+  .screen-landing .studio-meta {grid-template-columns: 1.2fr 1fr;}
+}
+.screen-landing .meta-item {display: flex;
+      flex-direction: column;
+      gap: var(--sp-1);}
+.screen-landing .meta-label {font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;}
+.screen-landing .meta-val {font-size: var(--text-sm);
+      color: var(--fg);
+      line-height: 1.4;}
+.screen-landing .meta-val-mono {font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      font-size: var(--text-sm);
+      color: var(--fg);}
+.screen-landing .cta-row {display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--sp-3);}
+.screen-landing .btn-primary {font-family: var(--font-body);
+      font-weight: 600;
+      font-size: var(--text-base);
+      color: var(--accent-fg);
+      background-color: var(--accent); 
+      border: 1px solid transparent;
+      border-radius: var(--r-md);
+      padding: 0 var(--sp-5);
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--sp-2);
+      text-decoration: none;
+      cursor: pointer;
+      transition: filter var(--dur-fast) var(--ease), transform var(--dur-fast) var(--ease);}
+.screen-landing .btn-primary:hover {filter: brightness(1.08);}
+.screen-landing .btn-ghost {font-family: var(--font-body);
+      font-size: var(--text-sm);
+      color: var(--muted);
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      padding: 0 var(--sp-4);
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: background-color var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);}
+.screen-landing .btn-ghost:hover {background-color: var(--surface);
+      color: var(--fg);}
+.screen-landing .preview-board {background-color: var(--surface);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--r-lg);
+      padding: var(--sp-4);
+      box-shadow: var(--shadow-2);}
+.screen-landing .board-header {display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: var(--sp-3);
+      margin-bottom: var(--sp-3);}
+.screen-landing .board-title {font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      font-weight: 600;
+      color: var(--fg);
+      display: flex;
+      align-items: center;
+      gap: var(--sp-2);}
+.screen-landing .board-badge {font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      padding: 2px var(--sp-2);
+      border-radius: var(--r-pill);
+      background-color: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--muted);}
+.screen-landing .timeline-table {width: 100%;
+      border-collapse: collapse;
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      font-variant-numeric: tabular-nums;}
+.screen-landing .timeline-table th, .screen-landing .timeline-table td {padding: var(--sp-2);
+      text-align: left;
+      border-bottom: 1px solid var(--border);}
+.screen-landing .timeline-table th {color: var(--muted);
+      font-weight: 500;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;}
+.screen-landing .room-name-cell {font-weight: 600;
+      color: var(--fg);}
+.screen-landing .room-price-cell {color: var(--muted);}
+.screen-landing .status-cell {text-align: right;}
+.screen-landing .slot-pill {display: inline-flex;
+      align-items: center;
+      gap: var(--sp-1);
+      padding: 2px var(--sp-2);
+      border-radius: var(--r-pill);
+      font-size: var(--text-xs);
+      font-weight: 500;}
+.screen-landing .slot-pill.free {background-color: var(--ok-tint);
+      color: var(--ok);
+      border: 1px solid var(--ok-border);}
+.screen-landing .slot-pill.booked {background-color: var(--surface-2);
+      color: var(--muted);
+      border: 1px solid var(--border);}
+.screen-landing .board-footer {margin-top: var(--sp-3);
+      padding-top: var(--sp-2);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--muted);}
+.screen-landing .rooms-summary {padding: var(--sp-7) 0;
+      border-bottom: 1px solid var(--border);}
+.screen-landing .section-kicker {font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--muted); 
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: var(--sp-2);}
+.screen-landing .section-title {font-family: var(--font-display);
+      font-size: var(--text-2xl);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: var(--sp-2);}
+.screen-landing .section-sub {color: var(--muted);
+      font-size: var(--text-base);
+      margin-bottom: var(--sp-5);
+      max-width: 600px;}
+.screen-landing .rooms-grid {display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--sp-4);}
+@media (min-width: 680px) {
+  .screen-landing .rooms-grid {grid-template-columns: repeat(2, 1fr);}
+}
+@media (min-width: 980px) {
+  .screen-landing .rooms-grid {grid-template-columns: repeat(4, 1fr);}
+}
+.screen-landing .room-card {background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: var(--sp-4);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);}
+.screen-landing .room-card:hover {border-color: var(--border-strong);
+      background-color: var(--surface-2);}
+.screen-landing .room-card-head {margin-bottom: var(--sp-3);}
+.screen-landing .room-dim {font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--muted);
+      margin-bottom: var(--sp-1);}
+.screen-landing .room-name {font-family: var(--font-display);
+      font-size: var(--text-xl);
+      font-weight: 700;
+      color: var(--fg);
+      margin-bottom: var(--sp-2);}
+.screen-landing .room-specs {font-size: var(--text-sm);
+      color: var(--muted);
+      line-height: 1.4;
+      min-height: 40px;}
+.screen-landing .room-card-foot {padding-top: var(--sp-3);
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;}
+.screen-landing .rate-amount {font-family: var(--font-mono);
+      font-variant-numeric: tabular-nums;
+      font-size: var(--text-lg);
+      font-weight: 700;
+      color: var(--fg);}
+.screen-landing .rate-unit {font-size: var(--text-xs);
+      color: var(--muted);
+      font-family: var(--font-mono);}
+.screen-landing .faq-section {padding: var(--sp-7) 0;}
+.screen-landing .faq-grid {display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--sp-4);
+      margin-top: var(--sp-5);}
+@media (min-width: 760px) {
+  .screen-landing .faq-grid {grid-template-columns: repeat(3, 1fr);}
+}
+.screen-landing .faq-card {background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: var(--sp-4);}
+.screen-landing .faq-q {font-family: var(--font-display);
+      font-size: var(--text-base);
+      font-weight: 600;
+      margin-bottom: var(--sp-2);
+      color: var(--fg);}
+.screen-landing .faq-a {font-size: var(--text-sm);
+      color: var(--muted);
+      line-height: 1.45;}
+.screen-landing footer {border-top: 1px solid var(--border);
+      padding: var(--sp-5) 0;
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--muted);}
+.screen-landing .footer-inner {display: flex;
+      flex-direction: column;
+      gap: var(--sp-3);
+      justify-content: space-between;}
+@media (min-width: 600px) {
+  .screen-landing .footer-inner {flex-direction: row;
+        align-items: center;}
+}
