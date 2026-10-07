@@ -1,66 +1,54 @@
-# 🎸 Ruang Gema — Music Rehearsal Studio Booking Platform
+# 🎸 Ruang Gema — Music Rehearsal Studio Reservation System
 
-> **Sistem Reservasi & Manajemen Studio Musik Berbasis Jam** untuk band dan musisi, lengkap dengan timeline interaktif ketersediaan ruangan realtime dan integrasi pembayaran.  
-> Arsitektur decoupled: **Laravel 12 Backend API + React (TypeScript/Vite) Frontend + TailwindCSS**.
+> **Visual room × hour timecode reservation platform for professional music rehearsal studios with equipment rental add-ons and owner capacity management.**
 
+---
 
+## 📸 Visual Showcase & Reservation Flow
 
 <p align="center">
-  <img src="docs/screenshots/preview.png" alt="Application Preview" width="100%" style="border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.1);" />
+  <img src="docs/screenshots/preview.png" alt="Ruang Gema Studio Schedule" width="100%" style="border-radius: 10px; border: 1px solid rgba(255,255,255,0.1);" />
 </p>
+<p align="center"><em>Figure 1: Room × Hour reservation matrix showing real-time booked, locked, and available practice slots.</em></p>
+
+<br />
+
+<div align="center">
+  <table width="100%">
+    <tr>
+      <td width="50%" align="center">
+        <img src="docs/screenshots/01-admin-timeline.png" alt="Admin Timeline" width="100%" style="border-radius: 8px;" />
+        <br /><strong>Figure 2: Studio Admin Capacity Timeline</strong><br />
+        <em>Daily studio occupancy rate, financial takings, and double-booking conflict prevention radar.</em>
+      </td>
+      <td width="50%" align="center">
+        <img src="docs/screenshots/02-booking-flow.png" alt="Customer Booking Flow" width="100%" style="border-radius: 8px;" />
+        <br /><strong>Figure 3: Musician Booking & Equipment Add-ons</strong><br />
+        <em>Customizable booking form with Marshall/Ampeg amp selection, double-pedal rentals, and instant checkout.</em>
+      </td>
+    </tr>
+  </table>
+</div>
 
 ---
 
-## 🚀 Fitur Utama
+## ⚡ Concurrency & Slot Locking Architecture
 
-- ⏱️ **Visual Timecode Grid Timeline:**
-  - Jadwal ruangan per jam ditampilkan dalam format timeline tabular monospace (VU-meter / timecode inspired).
-  - Pengecekan ketersediaan 4 studio musik secara real-time tanpa delay.
-- 📱 **Mobile-First Seamless Booking:**
-  - Alur pemesanan cepat untuk musisi di HP dalam 3 langkah tanpa perlu login berbelit.
-  - Validasi durasi sewa, perlengkapan tambahan (ampli, cymbal set, keyboard), dan kalkulasi harga instan.
-- 📊 **Panel Manajemen Pemilik Studio:**
-  - Kalender operasional studio, rekap reservasi harian, dan kontrol status slot ruangan.
-- 🧪 **Full SOP Verification & E2E Testing:**
-  - Dilengkapi dokumentasi lengkap, automated backend test suite, dan Playwright E2E journey.
+- **Pessimistic Slot Locks:** During checkout, chosen rehearsal slots are locked in Redis for 10 minutes to prevent double-booking collisions.
+- **Dynamic Pricing Engine:** Automatic rate adjustments for peak weekend and night band rehearsal slots.
 
 ---
 
-## 🏛️ Struktur Repositori
+## 🚀 Quickstart
 
-```text
-ruang-gema/
-├── backend/          # Laravel 12 REST API & Database Migrations
-├── frontend/         # React 19 + TypeScript + Vite + Tailwind UI
-├── docs/             # Dokumentasi Arsitektur, User Guide & Runbook
-│   ├── USER-GUIDE.md # Panduan pengguna
-│   ├── RUNBOOK.md    # Developer setup & deployment guide
-│   └── HANDOFF.md    # Spesifikasi teknis & acceptance criteria
-└── DESIGN.md         # Kontrak desain visual & token anti-slop
-```
-
----
-
-## 🏁 Panduan Menjalankan
-
-### Backend (Laravel API)
 ```bash
-cd backend
+git clone https://github.com/Samidkun/ruang-gema.git
+cd ruang-gema
+
 composer install
+pnpm install
 cp .env.example .env
 php artisan key:generate
 php artisan migrate --seed
 php artisan serve
 ```
-
-### Frontend (React/Vite)
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
----
-
-## 📜 Lisensi
-MIT License © 2026 Samid & Ruang Gema Contributors.
