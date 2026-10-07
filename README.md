@@ -3,6 +3,12 @@
 > **Sistem Reservasi & Manajemen Studio Musik Berbasis Jam** untuk band dan musisi, lengkap dengan timeline interaktif ketersediaan ruangan realtime dan integrasi pembayaran.  
 > Arsitektur decoupled: **Laravel 12 Backend API + React (TypeScript/Vite) Frontend + TailwindCSS**.
 
+
+
+<p align="center">
+  <img src="docs/screenshots/preview.png" alt="Application Preview" width="100%" style="border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.1);" />
+</p>
+
 ---
 
 ## 🚀 Fitur Utama
